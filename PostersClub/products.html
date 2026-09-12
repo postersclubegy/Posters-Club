@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop Posters — Framed, Unframed & Ready-Made Designs | Posters Club</title>
+<meta name="description" content="Shop A3, A4 and A5 wall posters. Unframed crochet-paper posters (minimum order 10) and A3 black-framed posters, plus ready-made designs." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="assets/logo-mark.svg" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Shop</a></li>
+      <li><a href="custom.html">Custom Poster</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="checkout.html" class="cart-btn">🛒 Cart <span class="cart-count" data-cart-count>0</span></a>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-head container">
+  <div class="breadcrumb"><a href="index.html">Home</a> / Shop</div>
+  <h1>Shop Posters</h1>
+  <p>Unframed and framed poster prices below are real. The <strong style="color:var(--accent-2)">Ready-Made Designs</strong> further down still use temporary dummy prices until real designs are added.</p>
+</div>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="section-head" style="text-align:left; margin-bottom:24px;">
+      <h2 style="font-size:1.5rem;">Build Your Own Order</h2>
+      <p style="margin:0;">Choose a size and quantity for our standard poster types.</p>
+    </div>
+    <div class="grid" id="catalog-grid"></div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="section-head" style="text-align:left; margin-bottom:10px;">
+      <h2 style="font-size:1.5rem;">Ready-Made Designs</h2>
+      <p style="margin:0;">Pick a finished design — no editing needed.</p>
+    </div>
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-chip active" data-filter="All">All</button>
+      <button class="filter-chip" data-filter="Framed">Framed</button>
+      <button class="filter-chip" data-filter="Unframed">Unframed</button>
+    </div>
+    <div class="grid" id="ready-made-grid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Posters Club. All rights reserved.</span>
+      <a href="index.html">Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<a href="#" data-whatsapp target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
+
+<script src="js/config.js"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderCatalog();
+    renderReadyMade("All");
+
+    const params = new URLSearchParams(location.search);
+    const initialType = params.get("type");
+    if (initialType) {
+      document.querySelectorAll(".filter-chip").forEach((c) => c.classList.toggle("active", c.dataset.filter === initialType));
+      renderReadyMade(initialType);
+    }
+
+    document.getElementById("filter-bar").addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-chip");
+      if (!btn) return;
+      document.querySelectorAll(".filter-chip").forEach((c) => c.classList.remove("active"));
+      btn.classList.add("active");
+      renderReadyMade(btn.dataset.filter);
+    });
+  });
+
+  function renderReadyMade(filter) {
+    const grid = document.getElementById("ready-made-grid");
+    const list = filter === "All" ? READY_MADE_DESIGNS : READY_MADE_DESIGNS.filter((p) => p.type === filter);
+    grid.innerHTML = list.map((p) => {
+      const minQty = p.type === "Unframed" ? 10 : 1;
+      return `
+      <div class="card">
+        <div class="card-img">
+          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          ${p.tag ? `<span class="badge">${p.tag}</span>` : ""}
+          <span class="badge dummy" style="left:auto; right:10px;">Dummy price</span>
+        </div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <div class="meta-row">
+            <span class="meta-chip">${p.size}</span>
+            <span class="meta-chip">${p.type}</span>
+            ${p.type === "Unframed" ? `<span class="meta-chip">Min ${minQty}</span>` : ""}
+          </div>
+          <div class="qty-stepper" data-qty-for="${p.id}">
+            <button type="button" data-step="-1">–</button>
+            <input type="number" value="${minQty}" min="${minQty}" data-qty-input />
+            <button type="button" data-step="1">+</button>
+          </div>
+          <div class="price-row">
+            <span class="price">${formatMoney(p.price)}<small> / poster</small></span>
+          </div>
+          <button class="btn btn-primary btn-sm btn-block" data-add-readymade="${p.id}">Add to Order</button>
+        </div>
+      </div>`;
+    }).join("");
+
+    grid.querySelectorAll(".qty-stepper").forEach(wireQtyStepper);
+    grid.querySelectorAll("[data-add-readymade]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const p = READY_MADE_DESIGNS.find((x) => x.id === btn.dataset.addReadymade);
+        const stepper = grid.querySelector(`[data-qty-for="${p.id}"] input`);
+        const qty = parseInt(stepper.value, 10);
+        addToCart({
+          name: p.name,
+          image: p.image,
+          size: p.size,
+          type: p.type,
+          qty,
+          unitPrice: p.price,
+          isCustom: false,
+        });
+        showToast(`Added ${qty} × ${p.name} to your order`);
+      });
+    });
+  }
+
+  function renderCatalog() {
+    const grid = document.getElementById("catalog-grid");
+    grid.innerHTML = CATALOG_PRODUCTS.map((p) => {
+      const minQty = p.minQty;
+
+      if (p.offers) {
+        // Bundle-offer product (e.g. Framed A3) — pick a package instead of a quantity
+        return `
+        <div class="card" id="${p.id}">
+          <div class="card-img">
+            <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>${p.name}</h3>
+            <p style="margin:0; font-size:.82rem;">${p.material}</p>
+            <div class="radio-group" data-offer-group="${p.id}">
+              ${p.offers.map((o, i) => `
+                <label class="radio-card${i === 0 ? " selected" : ""}" data-offer-card data-qty="${o.qty}" data-total="${o.total}">
+                  <input type="radio" name="offer-${p.id}" ${i === 0 ? "checked" : ""} />
+                  <strong>${o.label}</strong>
+                  <div style="font-size:.85rem; color:var(--text-dim); margin-top:4px;">${formatMoney(o.total)}</div>
+                </label>
+              `).join("")}
+            </div>
+            <div class="price-row">
+              <span class="price" data-offer-total="${p.id}">${formatMoney(p.offers[0].total)}</span>
+            </div>
+            <button class="btn btn-primary btn-sm btn-block" data-add-offer="${p.id}">Add to Order</button>
+          </div>
+        </div>`;
+      }
+
+      return `
+      <div class="card">
+        <div class="card-img">
+          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p style="margin:0; font-size:.82rem;">${p.material}</p>
+          <div class="meta-row" data-size-chips="${p.id}">
+            ${p.sizes.map((s, i) => `<span class="meta-chip" data-size-chip="${s.size}" data-price="${s.price}" style="cursor:pointer; ${i === 0 ? "border-color:var(--accent); color:var(--text);" : ""}">${s.size}</span>`).join("")}
+          </div>
+          ${minQty > 1 ? `<span class="min-note">Minimum order: ${minQty} posters</span>` : ""}
+          <div class="qty-stepper" data-qty-for="${p.id}">
+            <button type="button" data-step="-1">–</button>
+            <input type="number" value="${minQty}" min="${minQty}" data-qty-input />
+            <button type="button" data-step="1">+</button>
+          </div>
+          <div class="price-row">
+            <span class="price" data-price-display="${p.id}">${formatMoney(p.sizes[0].price)}<small> / poster</small></span>
+          </div>
+          <button class="btn btn-primary btn-sm btn-block" data-add-catalog="${p.id}">Add to Order</button>
+        </div>
+      </div>`;
+    }).join("");
+
+    grid.querySelectorAll(".qty-stepper").forEach(wireQtyStepper);
+
+    // size selection (products with plain sizes, e.g. unframed)
+    grid.querySelectorAll("[data-size-chips]").forEach((row) => {
+      row.addEventListener("click", (e) => {
+        const chip = e.target.closest("[data-size-chip]");
+        if (!chip) return;
+        row.querySelectorAll("[data-size-chip]").forEach((c) => (c.style.cssText = ""));
+        chip.style.cssText = "border-color:var(--accent); color:var(--text);";
+        const pid = row.dataset.sizeChips;
+        const priceEl = grid.querySelector(`[data-price-display="${pid}"]`);
+        priceEl.innerHTML = `${formatMoney(parseInt(chip.dataset.price, 10))}<small> / poster</small>`;
+      });
+    });
+
+    // offer selection (bundle-offer products, e.g. framed A3)
+    grid.querySelectorAll("[data-offer-group]").forEach((group) => {
+      group.addEventListener("click", (e) => {
+        const card = e.target.closest("[data-offer-card]");
+        if (!card) return;
+        group.querySelectorAll("[data-offer-card]").forEach((c) => c.classList.remove("selected"));
+        card.classList.add("selected");
+        card.querySelector("input").checked = true;
+        const pid = group.dataset.offerGroup;
+        const totalEl = grid.querySelector(`[data-offer-total="${pid}"]`);
+        totalEl.textContent = formatMoney(parseInt(card.dataset.total, 10));
+      });
+    });
+
+    grid.querySelectorAll("[data-add-catalog]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const p = CATALOG_PRODUCTS.find((x) => x.id === btn.dataset.addCatalog);
+        const card = btn.closest(".card");
+        const activeChip = card.querySelector('[data-size-chip][style*="accent"]') || card.querySelector("[data-size-chip]");
+        const size = activeChip.dataset.sizeChip;
+        const price = parseInt(activeChip.dataset.price, 10);
+        const qtyInput = card.querySelector("[data-qty-input]");
+        let qty = parseInt(qtyInput.value, 10);
+        if (qty < p.minQty) {
+          qty = p.minQty;
+          qtyInput.value = qty;
+          showToast(`Minimum order for this product is ${p.minQty}`);
+        }
+        addToCart({
+          name: p.name,
+          image: p.image,
+          size,
+          type: p.type,
+          qty,
+          unitPrice: price,
+          isCustom: false,
+        });
+        showToast(`Added ${qty} × ${p.name} (${size}) to your order`);
+      });
+    });
+
+    grid.querySelectorAll("[data-add-offer]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const p = CATALOG_PRODUCTS.find((x) => x.id === btn.dataset.addOffer);
+        const card = btn.closest(".card");
+        const selected = card.querySelector("[data-offer-card].selected");
+        const qty = parseInt(selected.dataset.qty, 10);
+        const total = parseInt(selected.dataset.total, 10);
+        addToCart({
+          name: `${p.name} — ${selected.querySelector("strong").textContent}`,
+          image: p.image,
+          size: p.sizes[0].size,
+          type: p.type,
+          qty,
+          unitPrice: Math.round((total / qty) * 100) / 100,
+          isCustom: false,
+        });
+        showToast(`Added ${selected.querySelector("strong").textContent} (${p.name}) to your order`);
+      });
+    });
+  }
+
+  function wireQtyStepper(stepper) {
+    const input = stepper.querySelector("[data-qty-input]");
+    const min = parseInt(input.min || "1", 10);
+    stepper.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        let val = parseInt(input.value, 10) || min;
+        val += parseInt(btn.dataset.step, 10);
+        if (val < min) val = min;
+        input.value = val;
+      });
+    });
+    input.addEventListener("change", () => {
+      let val = parseInt(input.value, 10) || min;
+      if (val < min) val = min;
+      input.value = val;
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout — Posters Club</title>
+<meta name="description" content="Review your order and enter your delivery details to place your Posters Club order." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .checkout-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 34px; align-items: start; }
+  @media (max-width: 900px) { .checkout-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="assets/logo-mark.svg" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="custom.html">Custom Poster</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="checkout.html" class="cart-btn active">🛒 Cart <span class="cart-count" data-cart-count>0</span></a>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-head container">
+  <div class="breadcrumb"><a href="index.html">Home</a> / Checkout</div>
+  <h1>Your Order</h1>
+</div>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="checkout-grid">
+
+      <div>
+        <div id="cart-list"></div>
+
+        <div id="order-form-wrap" style="margin-top:10px;">
+          <h2 style="font-size:1.2rem;">Delivery Details</h2>
+          <form id="order-form" novalidate>
+            <div class="field" id="f-name">
+              <label>Full Name</label>
+              <input type="text" name="fullName" placeholder="e.g. Ahmed Mohamed" />
+              <div class="error-text">Please enter your full name.</div>
+            </div>
+            <div class="field-row">
+              <div class="field" id="f-phone">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="01XXXXXXXXX" />
+                <div class="error-text">Please enter a valid phone number.</div>
+              </div>
+              <div class="field" id="f-phone2">
+                <label>Second Phone Number <span style="color:var(--text-dim); font-weight:500;">(optional)</span></label>
+                <input type="tel" name="phone2" placeholder="01XXXXXXXXX" />
+              </div>
+            </div>
+
+            <h2 style="font-size:1.2rem; margin-top:28px;">Address</h2>
+            <div class="field-row">
+              <div class="field" id="f-building">
+                <label>Building</label>
+                <input type="text" name="building" placeholder="e.g. 12" />
+                <div class="error-text">Required.</div>
+              </div>
+              <div class="field" id="f-apartment">
+                <label>Apartment</label>
+                <input type="text" name="apartment" placeholder="e.g. 5" />
+                <div class="error-text">Required.</div>
+              </div>
+            </div>
+            <div class="field" id="f-street">
+              <label>Street</label>
+              <input type="text" name="street" placeholder="e.g. Al Nour Street" />
+              <div class="error-text">Required.</div>
+            </div>
+            <div class="field-row">
+              <div class="field" id="f-area">
+                <label>Area</label>
+                <input type="text" name="area" placeholder="e.g. New Cairo" />
+                <div class="error-text">Required.</div>
+              </div>
+              <div class="field" id="f-city">
+                <label>City</label>
+                <input type="text" name="city" placeholder="e.g. Cairo" />
+                <div class="error-text">Required.</div>
+              </div>
+            </div>
+
+            <h2 style="font-size:1.2rem; margin-top:28px;">Your Location</h2>
+            <div class="field">
+              <label>Google Maps Link <span style="color:var(--text-dim); font-weight:500;">(optional, but helps us find you fast)</span></label>
+              <input type="url" name="mapsLink" placeholder="Paste your Google Maps link here" />
+              <div class="hint">
+                On Google Maps: drop a pin on your location → tap <strong>Share</strong> → <strong>Copy link</strong> → paste it above.
+                <a href="https://maps.google.com" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700;">Open Google Maps →</a>
+              </div>
+            </div>
+
+            <h2 style="font-size:1.2rem; margin-top:28px;">Notes for us <span style="color:var(--text-dim); font-weight:500;">(optional)</span></h2>
+            <div class="field">
+              <textarea name="notes" rows="3" placeholder="Anything else we should know about your order or delivery?"></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h3 style="font-size:1.05rem;">Order Summary</h3>
+        <div class="summary-line"><span>Subtotal</span><span id="sum-subtotal">0 EGP</span></div>
+        <div class="summary-line"><span>Delivery</span><span id="sum-delivery">85 EGP</span></div>
+        <div class="summary-line total"><span>Total</span><span id="sum-total">0 EGP</span></div>
+        <button class="btn btn-primary btn-block" id="place-order-btn" style="margin-top:16px;">Place Order</button>
+        <p class="hint" style="text-align:center;" id="place-order-status"></p>
+        <p class="hint" style="text-align:center;">Payment: pay on confirmation via InstaPay — we'll message you the details after we confirm your order.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Posters Club. All rights reserved.</span>
+      <a href="index.html">Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/order-notify.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>

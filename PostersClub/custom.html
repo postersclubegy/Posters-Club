@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Create Your Own Poster — Custom A3 Framed Posters | Posters Club</title>
+<meta name="description" content="Upload your own photos and turn each one into an A3 black-framed poster. Live preview, stretch or crop, instant pricing." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="assets/logo-mark.svg" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="custom.html" class="active">Custom Poster</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="checkout.html" class="cart-btn">🛒 Cart <span class="cart-count" data-cart-count>0</span></a>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-head container">
+  <div class="breadcrumb"><a href="index.html">Home</a> / Custom Poster</div>
+  <h1>Create Your Own Poster</h1>
+  <p id="mode-intro">Upload your photos — each image becomes its own <strong>A3, black-framed</strong> poster. Preview every poster before you order.</p>
+</div>
+
+<section class="section-tight">
+  <div class="container">
+
+    <div class="poster-mode-bar">
+      <div class="radio-group" id="mode-group">
+        <label class="radio-card selected" data-mode-card="framed">
+          <input type="radio" name="poster-mode" checked />
+          <strong>Framed</strong>
+          <div style="font-size:.8rem; color:var(--text-dim); margin-top:4px;" id="mode-card-framed-sub">A3 · Black frame · 200 EGP each</div>
+        </label>
+        <label class="radio-card" data-mode-card="unframed">
+          <input type="radio" name="poster-mode" />
+          <strong>Unframed</strong>
+          <div style="font-size:.8rem; color:var(--text-dim); margin-top:4px;">Choose A3, A4 or A5 · Exactly 10</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="poster-mode-bar" id="size-bar" style="display:none;">
+      <label style="display:block; font-weight:700; font-size:.85rem; margin-bottom:8px;">Poster Size</label>
+      <div class="radio-group" id="size-group"></div>
+    </div>
+
+    <div class="poster-mode-bar" id="wall-preview-wrap" style="display:none;">
+      <label style="display:block; font-weight:700; font-size:.85rem; margin-bottom:8px;">Preview: your posters together on a wall</label>
+      <canvas id="wall-canvas" style="max-width:100%; height:auto; border-radius:var(--radius); display:block; margin:0 auto;"></canvas>
+      <p class="hint">This wall view is just to help you visualize the set — it's not used for printing.</p>
+    </div>
+
+    <div id="upload-step">
+      <input type="file" id="file-input" accept="image/*" multiple hidden />
+      <div class="upload-zone" id="upload-zone">
+        <div class="icon">🖼️</div>
+        <h3>Click to upload, or drag & drop your images here</h3>
+        <p>Upload as many photos as you like — one poster will be created per image. JPG or PNG, up to ~15MB each.</p>
+        <button type="button" class="btn btn-primary" id="upload-btn">Choose Images</button>
+      </div>
+    </div>
+
+    <div id="designer-step" style="display:none;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:6px;">
+        <h2 style="font-size:1.3rem; margin:0;">Your Posters (<span id="poster-count">0</span>)</h2>
+        <button type="button" class="btn btn-outline btn-sm" id="add-more-btn">+ Add More Images</button>
+      </div>
+      <p style="margin-top:0;" id="mode-subline">All posters are A3 · Black Frame. Choose how each image fits inside the frame.</p>
+      <div class="poster-grid" id="poster-grid"></div>
+
+      <div class="summary-box" style="margin-top:36px; max-width:420px; margin-left:auto; margin-right:auto; position:static;">
+        <div class="summary-line"><span id="summary-qty-label">0 custom posters</span><span id="summary-unit-price">—</span></div>
+        <div class="summary-line total"><span>Total</span><span id="summary-total">0 EGP</span></div>
+        <button class="btn btn-primary btn-block" id="add-order-btn" style="margin-top:10px;">Add to Order</button>
+        <p class="hint" style="text-align:center; margin-top:10px;">Delivery (85 EGP) is calculated at checkout.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Posters Club. All rights reserved.</span>
+      <a href="index.html">Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<a href="#" data-whatsapp target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
+
+<script src="js/config.js"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>

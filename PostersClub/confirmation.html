@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order Received — Posters Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="assets/logo-mark.svg" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
+    <span></span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="confirm-box">
+    <div class="confirm-icon">🎉</div>
+    <h1>Order Received</h1>
+    <p>Thank you for ordering from Posters Club. Your order has been successfully received.</p>
+    <div class="order-num" id="order-number">PC-0000</div>
+    <p>We'll contact you shortly on your phone number to confirm your order and payment.</p>
+    <div id="demo-note" style="text-align:left; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:16px; margin:20px 0; font-size:.82rem; color:var(--text-dim);"></div>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
+      <a href="index.html" class="btn btn-primary">Back to Posters Club</a>
+      <button class="btn btn-outline" id="download-btn">⬇ Download Order Details</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Posters Club. All rights reserved.</span>
+      <a href="index.html">Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const raw = sessionStorage.getItem("pc_last_order");
+    if (!raw) {
+      document.getElementById("order-number").textContent = "—";
+      document.getElementById("demo-note").innerHTML = "No recent order found. <a href='index.html' style='color:var(--accent)'>Go back home</a>.";
+      document.getElementById("download-btn").style.display = "none";
+      return;
+    }
+    const order = JSON.parse(raw);
+    document.getElementById("order-number").textContent = order.orderNumber;
+
+    if (order.emailSent) {
+      document.getElementById("demo-note").innerHTML =
+        "<strong>✓ Sent to Posters Club.</strong> Your order details" +
+        (order.imagesUploaded ? " and custom poster images" : "") +
+        " have been emailed to us automatically. You can still download a copy below for your own records.";
+    } else {
+      document.getElementById("demo-note").innerHTML =
+        "<strong>About this demo:</strong> automatic order emails aren't connected yet, so this order (and any custom images) is saved in your browser and available to download below instead. Once that's set up, orders like this will land straight in the owner's inbox automatically.";
+    }
+
+    document.getElementById("download-btn").addEventListener("click", () => downloadOrder(order));
+  });
+
+  function downloadOrder(order) {
+    const lines = [];
+    lines.push(`POSTERS CLUB — NEW ORDER`);
+    lines.push(`Order #: ${order.orderNumber}`);
+    lines.push(`Date: ${order.createdAt}`);
+    lines.push(``);
+    lines.push(`Customer Name: ${order.customer.fullName}`);
+    lines.push(`Phone: ${order.customer.phone}`);
+    lines.push(`Second Phone: ${order.customer.phone2 || "-"}`);
+    lines.push(`Address: Building ${order.customer.building}, Apt ${order.customer.apartment}, ${order.customer.street}, ${order.customer.area}, ${order.customer.city}`);
+    lines.push(`Google Maps Location: ${order.customer.mapsLink || "-"}`);
+    lines.push(`Notes: ${order.customer.notes || "-"}`);
+    lines.push(``);
+    lines.push(`PRODUCTS:`);
+    order.items.forEach((it) => {
+      lines.push(`- ${it.qty} × ${it.name} (${it.size}, ${it.type}) — ${it.unitPrice} EGP each`);
+    });
+    lines.push(``);
+    lines.push(`Subtotal: ${order.subtotal} EGP`);
+    lines.push(`Delivery: ${order.delivery} EGP`);
+    lines.push(`TOTAL: ${order.total} EGP`);
+    lines.push(`Payment Status: Pending`);
+
+    const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+    triggerDownload(blob, `${order.orderNumber}-details.txt`);
+
+    // Also download each custom poster image
+    order.items.forEach((it, itemIdx) => {
+      if (it.isCustom && it.customPosters) {
+        it.customPosters.forEach((p, i) => {
+          fetch(p.dataUrl).then(r => r.blob()).then(blob => {
+            triggerDownload(blob, `${order.orderNumber}-poster-${itemIdx + 1}-${i + 1}.jpg`);
+          });
+        });
+      }
+    });
+  }
+
+  function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+</script>
+</body>
+</html>
