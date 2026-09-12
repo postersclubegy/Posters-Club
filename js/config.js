@@ -29,9 +29,9 @@ const SITE_CONFIG = {
   // ownerEmail above. See README.md → "Turning on automatic order
   // emails" for the exact free signup steps.
   emailjs: {
-    serviceId: "",   // TEMPORARY EMPTY — from EmailJS → Email Services
-    templateId: "",  // TEMPORARY EMPTY — from EmailJS → Email Templates
-    publicKey: "",   // TEMPORARY EMPTY — from EmailJS → Account → General
+    serviceId: "service_h6v6u92",
+    templateId: "template_c100hjb",
+    publicKey: "bXDYd8HMUG-0RpCde",
   },
 
   // ── PHASE 2: reliable storage for custom poster images ───────────
@@ -41,8 +41,8 @@ const SITE_CONFIG = {
   // Supabase storage bucket instead, with permanent links included in
   // the order email — the reliable, recommended option.
   supabase: {
-    url: "",       // TEMPORARY EMPTY — from Supabase → Project Settings → API
-    anonKey: "",   // TEMPORARY EMPTY — from Supabase → Project Settings → API
+    url: "https://fqzgbcibdaovsmwfuedk.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxemdiY2liZGFvdnNtd2Z1ZWRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjQ2ODcsImV4cCI6MjEwNDgwMDY4N30.Oom0rr6V4NK6W4YmpBEu25wHq1qpmshKw07ECcX_8jg",
     bucket: "posters-club-orders",
   },
 };
