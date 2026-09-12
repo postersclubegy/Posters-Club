@@ -78,7 +78,7 @@
     </div>
     <div class="grid" id="home-product-grid"></div>
     <div style="text-align:center; margin-top:36px;">
-      <a href="products.html" class="btn btn-outline">View All Designs</a>
+      <a href="products.html#ready-made" class="btn btn-outline">View All Designs</a>
     </div>
   </div>
 </section>
@@ -149,7 +149,7 @@
       <div>
         <h4>Shop</h4>
         <ul>
-          <li><a href="products.html">Ready-Made Designs</a></li>
+          <li><a href="products.html#ready-made">Ready-Made Designs</a></li>
           <li><a href="products.html?type=Unframed">Unframed Posters</a></li>
           <li><a href="products.html?type=Framed">Framed Posters</a></li>
           <li><a href="custom.html">Custom Poster</a></li>
@@ -203,7 +203,7 @@
     return `
     <div class="card">
       <div class="card-img">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        <img src="${p.image}" alt="${p.name}" loading="lazy" data-lightbox="${p.image}" data-lightbox-caption="${p.name}" style="cursor:zoom-in;" />
         ${p.tag ? `<span class="badge">${p.tag}</span>` : ""}
       </div>
       <div class="card-body">
@@ -215,7 +215,7 @@
         <div class="price-row">
           <span class="price">${formatMoney(p.price)}</span>
         </div>
-        <a href="products.html" class="btn btn-outline btn-sm btn-block">View & Order</a>
+        <a href="products.html#ready-made" class="btn btn-outline btn-sm btn-block">View & Order</a>
       </div>
     </div>`;
   }

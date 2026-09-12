@@ -45,11 +45,11 @@
   </div>
 </section>
 
-<section class="section-tight">
+<section class="section-tight" id="ready-made">
   <div class="container">
     <div class="section-head" style="text-align:left; margin-bottom:10px;">
       <h2 style="font-size:1.5rem;">Ready-Made Designs</h2>
-      <p style="margin:0;">Pick a finished design — no editing needed.</p>
+      <p style="margin:0;">Pick a finished design — no editing needed. Click a poster to see it larger.</p>
     </div>
     <div class="filter-bar" id="filter-bar">
     </div>
@@ -68,6 +68,12 @@
 
 <a href="#" data-whatsapp target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
 
+<div class="lightbox-overlay" id="lightbox">
+  <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="" />
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
 <script src="js/config.js"></script>
 <script src="js/products-data.js"></script>
 <script src="js/cart.js"></script>
@@ -83,6 +89,16 @@
     if (initialType && document.querySelector(`[data-filter="${initialType}"]`)) {
       document.querySelectorAll(".filter-chip").forEach((c) => c.classList.toggle("active", c.dataset.filter === initialType));
       renderReadyMade(initialType);
+    }
+
+    // Links like products.html#ready-made rely on the browser's built-in
+    // hash-scroll, but that happens before these grids finish rendering —
+    // so the page was scrolling to where #ready-made USED to be (the very
+    // top), not where it ends up once the cards above it take up their
+    // real height. Re-scroll manually once everything above has rendered.
+    if (location.hash) {
+      const target = document.querySelector(location.hash);
+      if (target) requestAnimationFrame(() => target.scrollIntoView());
     }
 
     document.getElementById("filter-bar").addEventListener("click", (e) => {
@@ -116,7 +132,7 @@
       return `
       <div class="card">
         <div class="card-img">
-          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          <img src="${p.image}" alt="${p.name}" loading="lazy" data-lightbox="${p.image}" data-lightbox-caption="${p.name}" style="cursor:zoom-in;" />
           ${p.tag ? `<span class="badge">${p.tag}</span>` : ""}
         </div>
         <div class="card-body">
