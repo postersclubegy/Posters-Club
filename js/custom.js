@@ -382,11 +382,11 @@ function renderResNote(el, p) {
 
 // The wall/frame area itself is a FIXED size (always computed from A3, for
 // this poster count) — switching A3/A4/A5 never resizes that outer frame.
-// What changes is the posters inside it: their slots shrink or grow to the
-// real selected size, and the gap between them grows or shrinks to absorb
-// the difference so the whole layout still exactly fills the same fixed
-// frame. That's what makes a wall of A5 posters look like real A5 posters
-// spaced out on the SAME wall, instead of a smaller wall of same-looking posters.
+// The posters inside shrink/grow to their real selected size, staying
+// closely grouped together (gap scales down WITH them, so they don't drift
+// apart), and that whole tighter cluster is centered inside the fixed
+// frame — leaving a uniform border of extra wall around it for A4/A5,
+// rather than stretching the gaps between posters to fill the frame.
 function computeWallLayout() {
   const count = posters.length;
   if (count < 2) return null;
@@ -413,16 +413,20 @@ function computeWallLayout() {
 
   const sizeMM = isFramed ? SIZE_MM.A3 : SIZE_MM[unframedSize];
   const slot = slotDims(sizeMM); // the ACTUAL selected size
+  const sizeScale = sizeMM.w / SIZE_MM.A3.w; // gap shrinks proportionally too, so the group stays tight
+  const gapMM = baseGapMM * sizeScale;
 
-  // Solve for the gap that keeps the total frame size fixed while the
-  // slots themselves shrink/grow to their real selected size.
-  const gapWmm = cols > 1 ? (fixedTotalWmm - marginMM * 2 - cols * slot.slotW) / (cols - 1) : 0;
-  const gapHmm = rows > 1 ? (fixedTotalHmm - marginMM * 2 - rows * slot.slotH) / (rows - 1) : 0;
+  const clusterWmm = cols * slot.slotW + (cols - 1) * gapMM;
+  const clusterHmm = rows * slot.slotH + (rows - 1) * gapMM;
+  const availableWmm = fixedTotalWmm - marginMM * 2;
+  const availableHmm = fixedTotalHmm - marginMM * 2;
+  const offsetXmm = marginMM + Math.max(0, (availableWmm - clusterWmm) / 2);
+  const offsetYmm = marginMM + Math.max(0, (availableHmm - clusterHmm) / 2);
 
   return {
     cols, rows,
     slotW: slot.slotW, slotH: slot.slotH,
-    gapWmm, gapHmm, marginMM, scale,
+    gapMM, offsetXmm, offsetYmm, scale,
     totalWmm: fixedTotalWmm, totalHmm: fixedTotalHmm,
     frameBorderMM, isFramed,
   };
@@ -448,8 +452,8 @@ function renderWallPreview() {
   posters.forEach((p, i) => {
     const col = i % layout.cols;
     const row = Math.floor(i / layout.cols);
-    const sx = (layout.marginMM + col * (layout.slotW + layout.gapWmm)) * layout.scale;
-    const sy = (layout.marginMM + row * (layout.slotH + layout.gapHmm)) * layout.scale;
+    const sx = (layout.offsetXmm + col * (layout.slotW + layout.gapMM)) * layout.scale;
+    const sy = (layout.offsetYmm + row * (layout.slotH + layout.gapMM)) * layout.scale;
     const sw = layout.slotW * layout.scale;
     const sh = layout.slotH * layout.scale;
 
