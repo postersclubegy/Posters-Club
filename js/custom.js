@@ -49,7 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const addMoreBtn = document.getElementById("add-more-btn");
   const addOrderBtn = document.getElementById("add-order-btn");
 
-  uploadBtn.addEventListener("click", () => fileInput.click());
+  // uploadBtn lives INSIDE uploadZone — without stopping the click from
+  // bubbling, tapping the button fired fileInput.click() twice for one tap
+  // (once from the button's own listener, once from the zone's). On a
+  // desktop file dialog that's mostly harmless; a native mobile photo
+  // picker triggered twice back-to-back can glitch and silently hand back
+  // nothing, which matched exactly what was being reported on phones.
+  uploadBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    fileInput.click();
+  });
   addMoreBtn.addEventListener("click", () => fileInput.click());
   uploadZone.addEventListener("click", () => fileInput.click());
 
