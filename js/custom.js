@@ -258,15 +258,9 @@ function updateCanvasCursor(canvas, p) {
 function wirePanning(canvas, p) {
   let drag = null;
 
-  canvas.addEventListener("pointerdown", (e) => {
-    if (p.fit !== "crop") return;
-    canvas.setPointerCapture(e.pointerId);
-    canvas.classList.add("panning");
-    drag = { x: e.clientX, y: e.clientY, offsetX: p.offsetX, offsetY: p.offsetY };
-  });
-
-  canvas.addEventListener("pointermove", (e) => {
-    if (!drag) return;
+  function onMove(e) {
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    e.preventDefault();
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
@@ -283,11 +277,29 @@ function wirePanning(canvas, p) {
     p.offsetY = maxOffYpx > 0 ? clamp(drag.offsetY - srcDy / maxOffYpx, -1, 1) : 0;
     drawPoster(canvas, p);
     renderWallPreview();
-  });
+  }
 
-  ["pointerup", "pointercancel", "pointerleave"].forEach((evt) =>
-    canvas.addEventListener(evt, () => { drag = null; canvas.classList.remove("panning"); })
-  );
+  function endDrag(e) {
+    if (!drag || (e.pointerId !== undefined && e.pointerId !== drag.pointerId)) return;
+    drag = null;
+    canvas.classList.remove("panning");
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", endDrag);
+    window.removeEventListener("pointercancel", endDrag);
+  }
+
+  // Move/up are tracked on `window`, not the canvas — on a phone the finger
+  // very quickly moves outside the small canvas element's bounds, and a
+  // mouse mostly doesn't, which is why this only broke on mobile.
+  canvas.addEventListener("pointerdown", (e) => {
+    if (p.fit !== "crop") return;
+    e.preventDefault();
+    canvas.classList.add("panning");
+    drag = { x: e.clientX, y: e.clientY, offsetX: p.offsetX, offsetY: p.offsetY, pointerId: e.pointerId };
+    window.addEventListener("pointermove", onMove, { passive: false });
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
+  });
 }
 
 function clamp(v, min, max) {

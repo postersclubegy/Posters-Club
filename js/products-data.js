@@ -13,16 +13,22 @@
 // its file name here; swap the whole photo pool by re-running the
 // Instagram pull (ask me) since those signed image links expire.
 
-// Ready-made designs — each is a real product customers can add straight to cart
+// Ready-made designs — each is a real product customers can add straight to cart.
+// All framed designs are a flat 200 EGP (matches the standalone framed poster price).
+// Each image (except Vini Jr, kept as the original photo per your note) is the
+// actual design cropped from your Instagram post — or, where the Instagram
+// photo was too small/angled to look good, a high-quality version of that same
+// design — composited into the same A3 black-frame look used in the custom
+// poster designer. More designs to come once you send the next batch.
 const READY_MADE_DESIGNS = [
-  { id: "rm-01", name: "Vini Jr. Framed Poster", image: "assets/previous-work/instagram/ig-01.jpg", size: "A3", type: "Framed", price: 420, tag: "Bestseller" },
-  { id: "rm-02", name: "Motivational Print", image: "assets/previous-work/instagram/ig-04.jpg", size: "A4", type: "Unframed", price: 140, tag: null },
-  { id: "rm-03", name: "Music & Vinyl Poster Set", image: "assets/previous-work/instagram/ig-07.jpg", size: "A3", type: "Framed", price: 420, tag: "New" },
-  { id: "rm-04", name: "Movie Villains Poster Set", image: "assets/previous-work/instagram/ig-10.jpg", size: "A3", type: "Unframed", price: 180, tag: "Bestseller" },
-  { id: "rm-05", name: "Golden Era Cinema Set", image: "assets/previous-work/instagram/ig-24.jpg", size: "A3", type: "Unframed", price: 180, tag: null },
-  { id: "rm-06", name: "Porsche Racing Poster", image: "assets/previous-work/instagram/ig-15.jpg", size: "A4", type: "Unframed", price: 140, tag: "New" },
-  { id: "rm-07", name: "Scarface & Icons Poster Set", image: "assets/previous-work/instagram/ig-21.jpg", size: "A3", type: "Framed", price: 420, tag: null },
-  { id: "rm-08", name: "Al Ahly Club Poster", image: "assets/previous-work/instagram/ig-32.jpg", size: "A3", type: "Framed", price: 420, tag: null },
+  { id: "rm-01", name: "Vini Jr. Framed Poster", image: "assets/previous-work/instagram/ig-01.jpg", size: "A3", type: "Framed", price: 200, tag: "Bestseller" },
+  { id: "rm-02", name: "Motivational Print", image: "assets/designs/motivational-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-03", name: "Music Is The Answer Poster", image: "assets/designs/music-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-04", name: "Joker Poster", image: "assets/designs/joker-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "Bestseller" },
+  { id: "rm-05", name: "Pulp Fiction Poster", image: "assets/designs/pulpfiction-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-06", name: "Porsche Racing Poster", image: "assets/designs/porsche-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-07", name: "Scarface Poster", image: "assets/designs/scarface-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-08", name: "Al Ahly Club Poster", image: "assets/designs/alahly-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
 ];
 
 // Base catalog products (unframed + framed) — these drive the size/qty logic
