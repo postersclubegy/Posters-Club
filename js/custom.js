@@ -145,8 +145,24 @@ function setPosterMode(mode) {
 /* ---------- upload handling ---------- */
 
 function handleFiles(fileList) {
-  const files = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
-  if (files.length === 0) return;
+  const rawFiles = Array.from(fileList);
+  if (rawFiles.length === 0) return;
+
+  // Some mobile browsers / photo-picker sources (notably some Android file
+  // providers) hand over files with an empty or missing `file.type`, so a
+  // strict MIME-type-only filter can silently drop every single file with
+  // zero feedback — which looks exactly like "nothing happened after I
+  // uploaded". Fall back to checking the file extension in that case, and
+  // always tell the user if everything got filtered out instead of just
+  // doing nothing.
+  const files = rawFiles.filter((f) => {
+    if (f.type) return f.type.startsWith("image/");
+    return /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(f.name || "");
+  });
+  if (files.length === 0) {
+    showToast("Those don't look like image files — please choose JPG or PNG photos.");
+    return;
+  }
 
   const cap = getCap();
   const remaining = cap - posters.length;
@@ -159,10 +175,18 @@ function handleFiles(fileList) {
     showToast(`Only added ${accepted.length} — this bundle is capped at ${cap} photos.`);
   }
 
+  showToast(`Processing ${accepted.length} photo${accepted.length === 1 ? "" : "s"}...`);
+
   accepted.forEach((file) => {
     const reader = new FileReader();
+    reader.onerror = () => {
+      showToast(`Couldn't read "${file.name}" — try a different photo.`);
+    };
     reader.onload = (e) => {
       const img = new Image();
+      img.onerror = () => {
+        showToast(`"${file.name}" couldn't be opened as an image — try saving it as JPG or PNG first.`);
+      };
       img.onload = () => {
         posters.push({
           id: "p_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
@@ -178,7 +202,11 @@ function handleFiles(fileList) {
       };
       img.src = e.target.result;
     };
-    reader.readAsDataURL(file);
+    try {
+      reader.readAsDataURL(file);
+    } catch (err) {
+      showToast(`Couldn't read "${file.name}" — try a different photo.`);
+    }
   });
 }
 
@@ -191,10 +219,15 @@ function renderDesigner() {
   document.getElementById("add-more-btn").style.display = posters.length >= getCap() ? "none" : "inline-flex";
 
   const isUnframed = posterMode === "unframed";
+  // Individual preview boxes are called "frames" by design, so when the wall
+  // preview shrinks for A4/A5, these need to visibly shrink too — otherwise
+  // it looks like only the wall picture changed size and the frames didn't.
+  const sizeScale = isUnframed ? SIZE_MM[unframedSize].w / SIZE_MM.A3.w : 1;
+  const frameMaxWidth = Math.round(260 * sizeScale);
   const grid = document.getElementById("poster-grid");
   grid.innerHTML = posters.map((p, i) => `
     <div class="poster-card" data-poster-id="${p.id}">
-      <div class="frame-preview${isUnframed ? " no-frame" : ""}"><canvas width="${POSTER_W}" height="${POSTER_H}"></canvas></div>
+      <div class="frame-preview${isUnframed ? " no-frame" : ""}" style="max-width:${frameMaxWidth}px; margin:0 auto 12px;"><canvas width="${POSTER_W}" height="${POSTER_H}"></canvas></div>
       <div style="font-weight:700; font-size:.85rem; margin-bottom:8px;">Poster ${i + 1}</div>
       <div class="fit-toggle">
         <button type="button" data-fit="crop" class="${p.fit === "crop" ? "active" : ""}">Crop</button>

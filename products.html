@@ -52,9 +52,6 @@
       <p style="margin:0;">Pick a finished design — no editing needed.</p>
     </div>
     <div class="filter-bar" id="filter-bar">
-      <button class="filter-chip active" data-filter="All">All</button>
-      <button class="filter-chip" data-filter="Framed">Framed</button>
-      <button class="filter-chip" data-filter="Unframed">Unframed</button>
     </div>
     <div class="grid" id="ready-made-grid"></div>
   </div>
@@ -78,11 +75,12 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     renderCatalog();
+    buildFilterBar();
     renderReadyMade("All");
 
     const params = new URLSearchParams(location.search);
     const initialType = params.get("type");
-    if (initialType) {
+    if (initialType && document.querySelector(`[data-filter="${initialType}"]`)) {
       document.querySelectorAll(".filter-chip").forEach((c) => c.classList.toggle("active", c.dataset.filter === initialType));
       renderReadyMade(initialType);
     }
@@ -95,6 +93,20 @@
       renderReadyMade(btn.dataset.filter);
     });
   });
+
+  function buildFilterBar() {
+    // Only show a Framed/Unframed choice if the catalog actually contains
+    // both — with only one type on offer, a filter for the other type just
+    // led to a confusing empty grid, so it's hidden until it's meaningful.
+    const bar = document.getElementById("filter-bar");
+    const types = [...new Set(READY_MADE_DESIGNS.map((p) => p.type))];
+    if (types.length <= 1) {
+      bar.style.display = "none";
+      return;
+    }
+    bar.innerHTML = `<button class="filter-chip active" data-filter="All">All</button>` +
+      types.map((t) => `<button class="filter-chip" data-filter="${t}">${t}</button>`).join("");
+  }
 
   function renderReadyMade(filter) {
     const grid = document.getElementById("ready-made-grid");
