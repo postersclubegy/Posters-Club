@@ -35,7 +35,7 @@
   <p>All prices below are real — 200 EGP for any A3 framed design, unframed from 20–40 EGP by size.</p>
 </div>
 
-<section class="section-tight">
+<section class="section-tight" id="build-your-own">
   <div class="container">
     <div class="section-head" style="text-align:left; margin-bottom:24px;">
       <h2 style="font-size:1.5rem;">Build Your Own Order</h2>
@@ -91,12 +91,14 @@
       renderReadyMade(initialType);
     }
 
-    // Links like products.html#ready-made rely on the browser's built-in
-    // hash-scroll, but that happens before these grids finish rendering —
-    // so the page was scrolling to where #ready-made USED to be (the very
-    // top), not where it ends up once the cards above it take up their
-    // real height. Re-scroll manually once everything above has rendered.
-    if (location.hash) {
+    // Arriving via a Ready-Made Design link (from the homepage) should show
+    // ONLY that section — not "Build Your Own Order" above it. Hiding that
+    // section outright is simpler and more reliable than trying to scroll
+    // precisely to the boundary between two sections whose heights depend
+    // on images that are still loading.
+    if (location.hash === "#ready-made") {
+      document.getElementById("build-your-own").style.display = "none";
+    } else if (location.hash) {
       const target = document.querySelector(location.hash);
       if (target) requestAnimationFrame(() => target.scrollIntoView());
     }
