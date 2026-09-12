@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Shop Posters — Framed, Unframed & Ready-Made Designs | Posters Club</title>
-<meta name="description" content="Shop A3, A4 and A5 wall posters. Unframed crochet-paper posters (minimum order 10) and A3 black-framed posters, plus ready-made designs." />
+<title>Shop Posters — Ready-Made Designs | Posters Club</title>
+<meta name="description" content="Shop ready-made A3 framed wall poster designs, or create your own custom poster from your own photos." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
@@ -32,18 +32,8 @@
 <div class="page-head container">
   <div class="breadcrumb"><a href="index.html">Home</a> / Shop</div>
   <h1>Shop Posters</h1>
-  <p>All prices below are real — 200 EGP for any A3 framed design, unframed from 20–40 EGP by size.</p>
+  <p>All prices below are real — 200 EGP for any A3 framed design.</p>
 </div>
-
-<section class="section-tight" id="build-your-own">
-  <div class="container">
-    <div class="section-head" style="text-align:left; margin-bottom:24px;">
-      <h2 style="font-size:1.5rem;">Build Your Own Order</h2>
-      <p style="margin:0;">Choose a size and quantity for our standard poster types.</p>
-    </div>
-    <div class="grid" id="catalog-grid"></div>
-  </div>
-</section>
 
 <section class="section-tight" id="ready-made">
   <div class="container">
@@ -80,7 +70,6 @@
 <script src="js/main.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    renderCatalog();
     buildFilterBar();
     renderReadyMade("All");
 
@@ -89,18 +78,6 @@
     if (initialType && document.querySelector(`[data-filter="${initialType}"]`)) {
       document.querySelectorAll(".filter-chip").forEach((c) => c.classList.toggle("active", c.dataset.filter === initialType));
       renderReadyMade(initialType);
-    }
-
-    // Arriving via a Ready-Made Design link (from the homepage) should show
-    // ONLY that section — not "Build Your Own Order" above it. Hiding that
-    // section outright is simpler and more reliable than trying to scroll
-    // precisely to the boundary between two sections whose heights depend
-    // on images that are still loading.
-    if (location.hash === "#ready-made") {
-      document.getElementById("build-your-own").style.display = "none";
-    } else if (location.hash) {
-      const target = document.querySelector(location.hash);
-      if (target) requestAnimationFrame(() => target.scrollIntoView());
     }
 
     document.getElementById("filter-bar").addEventListener("click", (e) => {
@@ -173,140 +150,6 @@
           isCustom: false,
         });
         showToast(`Added ${qty} × ${p.name} to your order`);
-      });
-    });
-  }
-
-  function renderCatalog() {
-    const grid = document.getElementById("catalog-grid");
-    grid.innerHTML = CATALOG_PRODUCTS.map((p) => {
-      const minQty = p.minQty;
-
-      if (p.offers) {
-        // Bundle-offer product (e.g. Framed A3) — pick a package instead of a quantity
-        return `
-        <div class="card" id="${p.id}">
-          <div class="card-img">
-            <img src="${p.image}" alt="${p.name}" loading="lazy" />
-          </div>
-          <div class="card-body">
-            <h3>${p.name}</h3>
-            <p style="margin:0; font-size:.82rem;">${p.material}</p>
-            <div class="radio-group" data-offer-group="${p.id}">
-              ${p.offers.map((o, i) => `
-                <label class="radio-card${i === 0 ? " selected" : ""}" data-offer-card data-qty="${o.qty}" data-total="${o.total}">
-                  <input type="radio" name="offer-${p.id}" ${i === 0 ? "checked" : ""} />
-                  <strong>${o.label}</strong>
-                  <div style="font-size:.85rem; color:var(--text-dim); margin-top:4px;">${formatMoney(o.total)}</div>
-                </label>
-              `).join("")}
-            </div>
-            <div class="price-row">
-              <span class="price" data-offer-total="${p.id}">${formatMoney(p.offers[0].total)}</span>
-            </div>
-            <button class="btn btn-primary btn-sm btn-block" data-add-offer="${p.id}">Add to Order</button>
-          </div>
-        </div>`;
-      }
-
-      return `
-      <div class="card">
-        <div class="card-img">
-          <img src="${p.image}" alt="${p.name}" loading="lazy" />
-        </div>
-        <div class="card-body">
-          <h3>${p.name}</h3>
-          <p style="margin:0; font-size:.82rem;">${p.material}</p>
-          <div class="meta-row" data-size-chips="${p.id}">
-            ${p.sizes.map((s, i) => `<span class="meta-chip" data-size-chip="${s.size}" data-price="${s.price}" style="cursor:pointer; ${i === 0 ? "border-color:var(--accent); color:var(--text);" : ""}">${s.size}</span>`).join("")}
-          </div>
-          ${minQty > 1 ? `<span class="min-note">Minimum order: ${minQty} posters</span>` : ""}
-          <div class="qty-stepper" data-qty-for="${p.id}">
-            <button type="button" data-step="-1">–</button>
-            <input type="number" value="${minQty}" min="${minQty}" data-qty-input />
-            <button type="button" data-step="1">+</button>
-          </div>
-          <div class="price-row">
-            <span class="price" data-price-display="${p.id}">${formatMoney(p.sizes[0].price)}<small> / poster</small></span>
-          </div>
-          <button class="btn btn-primary btn-sm btn-block" data-add-catalog="${p.id}">Add to Order</button>
-        </div>
-      </div>`;
-    }).join("");
-
-    grid.querySelectorAll(".qty-stepper").forEach(wireQtyStepper);
-
-    // size selection (products with plain sizes, e.g. unframed)
-    grid.querySelectorAll("[data-size-chips]").forEach((row) => {
-      row.addEventListener("click", (e) => {
-        const chip = e.target.closest("[data-size-chip]");
-        if (!chip) return;
-        row.querySelectorAll("[data-size-chip]").forEach((c) => (c.style.cssText = ""));
-        chip.style.cssText = "border-color:var(--accent); color:var(--text);";
-        const pid = row.dataset.sizeChips;
-        const priceEl = grid.querySelector(`[data-price-display="${pid}"]`);
-        priceEl.innerHTML = `${formatMoney(parseInt(chip.dataset.price, 10))}<small> / poster</small>`;
-      });
-    });
-
-    // offer selection (bundle-offer products, e.g. framed A3)
-    grid.querySelectorAll("[data-offer-group]").forEach((group) => {
-      group.addEventListener("click", (e) => {
-        const card = e.target.closest("[data-offer-card]");
-        if (!card) return;
-        group.querySelectorAll("[data-offer-card]").forEach((c) => c.classList.remove("selected"));
-        card.classList.add("selected");
-        card.querySelector("input").checked = true;
-        const pid = group.dataset.offerGroup;
-        const totalEl = grid.querySelector(`[data-offer-total="${pid}"]`);
-        totalEl.textContent = formatMoney(parseInt(card.dataset.total, 10));
-      });
-    });
-
-    grid.querySelectorAll("[data-add-catalog]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const p = CATALOG_PRODUCTS.find((x) => x.id === btn.dataset.addCatalog);
-        const card = btn.closest(".card");
-        const activeChip = card.querySelector('[data-size-chip][style*="accent"]') || card.querySelector("[data-size-chip]");
-        const size = activeChip.dataset.sizeChip;
-        const price = parseInt(activeChip.dataset.price, 10);
-        const qtyInput = card.querySelector("[data-qty-input]");
-        let qty = parseInt(qtyInput.value, 10);
-        if (qty < p.minQty) {
-          qty = p.minQty;
-          qtyInput.value = qty;
-          showToast(`Minimum order for this product is ${p.minQty}`);
-        }
-        addToCart({
-          name: p.name,
-          image: p.image,
-          size,
-          type: p.type,
-          qty,
-          unitPrice: price,
-          isCustom: false,
-        });
-        showToast(`Added ${qty} × ${p.name} (${size}) to your order`);
-      });
-    });
-
-    grid.querySelectorAll("[data-add-offer]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const p = CATALOG_PRODUCTS.find((x) => x.id === btn.dataset.addOffer);
-        const card = btn.closest(".card");
-        const selected = card.querySelector("[data-offer-card].selected");
-        const qty = parseInt(selected.dataset.qty, 10);
-        const total = parseInt(selected.dataset.total, 10);
-        addToCart({
-          name: `${p.name} — ${selected.querySelector("strong").textContent}`,
-          image: p.image,
-          size: p.sizes[0].size,
-          type: p.type,
-          qty,
-          unitPrice: Math.round((total / qty) * 100) / 100,
-          isCustom: false,
-        });
-        showToast(`Added ${selected.querySelector("strong").textContent} (${p.name}) to your order`);
       });
     });
   }
