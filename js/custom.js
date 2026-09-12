@@ -380,11 +380,13 @@ function renderResNote(el, p) {
 
 /* ---------- wall preview ---------- */
 
-// The scale is always calibrated off the A3 layout for this poster count —
-// NOT off whichever size is currently selected, and NOT re-fit separately
-// per size. That's what makes A4/A5 render genuinely, proportionally
-// smaller than A3 instead of each just independently filling the
-// container width (which is what was hiding the size difference before).
+// The wall/frame area itself is a FIXED size (always computed from A3, for
+// this poster count) — switching A3/A4/A5 never resizes that outer frame.
+// What changes is the posters inside it: their slots shrink or grow to the
+// real selected size, and the gap between them grows or shrinks to absorb
+// the difference so the whole layout still exactly fills the same fixed
+// frame. That's what makes a wall of A5 posters look like real A5 posters
+// spaced out on the SAME wall, instead of a smaller wall of same-looking posters.
 function computeWallLayout() {
   const count = posters.length;
   if (count < 2) return null;
@@ -393,28 +395,37 @@ function computeWallLayout() {
   const frameBorderMM = isFramed ? 14 : 0;
   const cols = count <= 3 ? count : count <= 6 ? 3 : 5;
   const rows = Math.ceil(count / cols);
-  const gapMM = 22;
   const marginMM = 30;
+  const baseGapMM = 22;
 
-  function dimsFor(sizeMM) {
-    const slotW = sizeMM.w + frameBorderMM * 2;
-    const slotH = sizeMM.h + frameBorderMM * 2;
-    return {
-      slotW, slotH,
-      totalWmm: marginMM * 2 + cols * slotW + (cols - 1) * gapMM,
-      totalHmm: marginMM * 2 + rows * slotH + (rows - 1) * gapMM,
-    };
+  function slotDims(sizeMM) {
+    return { slotW: sizeMM.w + frameBorderMM * 2, slotH: sizeMM.h + frameBorderMM * 2 };
   }
+
+  // Fixed reference frame size — always from A3, regardless of selection.
+  const refSlot = slotDims(SIZE_MM.A3);
+  const fixedTotalWmm = marginMM * 2 + cols * refSlot.slotW + (cols - 1) * baseGapMM;
+  const fixedTotalHmm = marginMM * 2 + rows * refSlot.slotH + (rows - 1) * baseGapMM;
 
   const wrap = document.getElementById("wall-preview-wrap");
   const containerPx = (wrap && wrap.clientWidth) || 1100;
-  const refDims = dimsFor(SIZE_MM.A3); // reference size — always A3, regardless of what's selected
-  const scale = containerPx / refDims.totalWmm; // calibrated so an A3 layout exactly fills the container
+  const scale = containerPx / fixedTotalWmm; // the frame always fills the container the same way
 
   const sizeMM = isFramed ? SIZE_MM.A3 : SIZE_MM[unframedSize];
-  const dims = dimsFor(sizeMM); // the ACTUAL selected size, drawn at the SAME scale
+  const slot = slotDims(sizeMM); // the ACTUAL selected size
 
-  return { cols, rows, slotW: dims.slotW, slotH: dims.slotH, gapMM, marginMM, scale, totalWmm: dims.totalWmm, totalHmm: dims.totalHmm, frameBorderMM, isFramed };
+  // Solve for the gap that keeps the total frame size fixed while the
+  // slots themselves shrink/grow to their real selected size.
+  const gapWmm = cols > 1 ? (fixedTotalWmm - marginMM * 2 - cols * slot.slotW) / (cols - 1) : 0;
+  const gapHmm = rows > 1 ? (fixedTotalHmm - marginMM * 2 - rows * slot.slotH) / (rows - 1) : 0;
+
+  return {
+    cols, rows,
+    slotW: slot.slotW, slotH: slot.slotH,
+    gapWmm, gapHmm, marginMM, scale,
+    totalWmm: fixedTotalWmm, totalHmm: fixedTotalHmm,
+    frameBorderMM, isFramed,
+  };
 }
 
 function renderWallPreview() {
@@ -437,8 +448,8 @@ function renderWallPreview() {
   posters.forEach((p, i) => {
     const col = i % layout.cols;
     const row = Math.floor(i / layout.cols);
-    const sx = (layout.marginMM + col * (layout.slotW + layout.gapMM)) * layout.scale;
-    const sy = (layout.marginMM + row * (layout.slotH + layout.gapMM)) * layout.scale;
+    const sx = (layout.marginMM + col * (layout.slotW + layout.gapWmm)) * layout.scale;
+    const sy = (layout.marginMM + row * (layout.slotH + layout.gapHmm)) * layout.scale;
     const sw = layout.slotW * layout.scale;
     const sh = layout.slotH * layout.scale;
 
