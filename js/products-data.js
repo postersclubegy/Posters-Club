@@ -28,7 +28,13 @@ const READY_MADE_DESIGNS = [
   { id: "rm-05", name: "Pulp Fiction Poster", image: "assets/designs/pulpfiction-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
   { id: "rm-06", name: "Porsche Racing Poster", image: "assets/designs/porsche-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
   { id: "rm-07", name: "Scarface Poster", image: "assets/designs/scarface-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-08", name: "Al Ahly Club Poster", image: "assets/designs/alahly-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-08", name: "The Odyssey Poster", image: "assets/designs/odyssey-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-09", name: "The Batman Poster", image: "assets/designs/batman-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-10", name: "Michael Jackson Beat It Poster", image: "assets/designs/mj-beat-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-11", name: "Good Old Days Poster", image: "assets/designs/goodolddays-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-12", name: "BMW E30 M3 Poster", image: "assets/designs/bmw-e30-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-13", name: "Fight Club Poster", image: "assets/designs/fightclub-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-14", name: "The Godfather Poster", image: "assets/designs/godfather-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
 ];
 
 // Base catalog products (unframed + framed) — these drive the size/qty logic
