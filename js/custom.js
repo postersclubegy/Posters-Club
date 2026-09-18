@@ -8,10 +8,10 @@
 
    Bundle offers (from the homepage "Offers & Bundles" section)
    arrive via a `?bundle=` URL param and lock the mode + count:
-     ?bundle=framed3    -> exactly 3 framed A3 posters, 540 EGP flat
+     ?bundle=framed3    -> exactly 3 framed A3 posters, 600 EGP flat
      ?bundle=unframed10 -> exactly 10 unframed posters, priced by size
    Visiting custom.html directly (no bundle param) gives the
-   flexible, uncapped Framed flow at 200 EGP/poster, same as before.
+   flexible, uncapped Framed flow at 250 EGP/poster, same as before.
 
    NOTE FOR PHASE 2: right now the finished poster images are
    compressed and stored in the browser only. Once real image
@@ -24,7 +24,7 @@ const POSTER_H = Math.round(POSTER_W * (420 / 297));
 const LOW_RES_MIN_SIDE = 1500;        // px — below this we warn about print quality
 const UNFRAMED_BUNDLE_COUNT = 10;
 const FRAMED_BUNDLE_COUNT = 3;
-const FRAMED_BUNDLE_TOTAL = 540;      // flat price for the 3-poster framed bundle
+const FRAMED_BUNDLE_TOTAL = 600;     // flat price for the 3-poster framed bundle
 const UNFRAMED_SIZES = CATALOG_PRODUCTS.find((p) => p.id === "unframed-poster").sizes; // [{size,price}]
 
 // Real paper sizes in mm (portrait) — used only to scale the wall preview realistically
@@ -136,7 +136,7 @@ function setPosterMode(mode) {
   const isUnframed = mode === "unframed";
   document.getElementById("mode-card-framed-sub").textContent = framedIsBundle
     ? `A3 · Black frame · Bundle of ${FRAMED_BUNDLE_COUNT} for ${FRAMED_BUNDLE_TOTAL} EGP`
-    : "A3 · Black frame · 200 EGP each";
+    : "A3 · Black frame · 250 EGP each";
 
   document.getElementById("mode-intro").innerHTML = isUnframed
     ? `Upload exactly <strong>${UNFRAMED_BUNDLE_COUNT} photos</strong> — each becomes its own <strong>unframed</strong> poster in your chosen size, and you'll see them all mocked up together on a wall.`

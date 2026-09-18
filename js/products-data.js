@@ -21,24 +21,24 @@
 // design — composited into the same A3 black-frame look used in the custom
 // poster designer. More designs to come once you send the next batch.
 const READY_MADE_DESIGNS = [
-  { id: "rm-01", name: "Vini Jr. Framed Poster", image: "assets/previous-work/instagram/ig-01.jpg", size: "A3", type: "Framed", price: 200, tag: "Bestseller" },
-  { id: "rm-02", name: "Motivational Print", image: "assets/designs/motivational-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-03", name: "Music Is The Answer Poster", image: "assets/designs/music-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-04", name: "Joker Poster", image: "assets/designs/joker-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "Bestseller" },
-  { id: "rm-05", name: "Pulp Fiction Poster", image: "assets/designs/pulpfiction-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-06", name: "Porsche Racing Poster", image: "assets/designs/porsche-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-07", name: "Scarface Poster", image: "assets/designs/scarface-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-08", name: "The Odyssey Poster", image: "assets/designs/odyssey-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-09", name: "The Batman Poster", image: "assets/designs/batman-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-10", name: "Michael Jackson Beat It Poster", image: "assets/designs/mj-beat-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-11", name: "Good Old Days Poster", image: "assets/designs/goodolddays-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-12", name: "BMW E30 M3 Poster", image: "assets/designs/bmw-e30-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-13", name: "Fight Club Poster", image: "assets/designs/fightclub-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-14", name: "The Godfather Poster", image: "assets/designs/godfather-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
-  { id: "rm-15", name: "Porsche 911 GT3 RS Poster", image: "assets/designs/porsche-gt3rs-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-16", name: "Lamborghini Countach Poster", image: "assets/designs/lamborghini-countach-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-17", name: "BMW M4 Poster", image: "assets/designs/bmw-m4-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
-  { id: "rm-18", name: "Mercedes AMG GT Poster", image: "assets/designs/mercedes-amg-gt-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-01", name: "Vini Jr. Framed Poster", image: "assets/previous-work/instagram/ig-01.jpg", size: "A3", type: "Framed", price: 250, tag: "Bestseller" },
+  { id: "rm-02", name: "Motivational Print", image: "assets/designs/motivational-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-03", name: "Music Is The Answer Poster", image: "assets/designs/music-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-04", name: "Joker Poster", image: "assets/designs/joker-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "Bestseller" },
+  { id: "rm-05", name: "Pulp Fiction Poster", image: "assets/designs/pulpfiction-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-06", name: "Porsche Racing Poster", image: "assets/designs/porsche-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-07", name: "Scarface Poster", image: "assets/designs/scarface-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-08", name: "The Odyssey Poster", image: "assets/designs/odyssey-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-09", name: "The Batman Poster", image: "assets/designs/batman-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-10", name: "Michael Jackson Beat It Poster", image: "assets/designs/mj-beat-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-11", name: "Good Old Days Poster", image: "assets/designs/goodolddays-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-12", name: "BMW E30 M3 Poster", image: "assets/designs/bmw-e30-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-13", name: "Fight Club Poster", image: "assets/designs/fightclub-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-14", name: "The Godfather Poster", image: "assets/designs/godfather-framed.jpg", size: "A3", type: "Framed", price: 250, tag: null },
+  { id: "rm-15", name: "Porsche 911 GT3 RS Poster", image: "assets/designs/porsche-gt3rs-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-16", name: "Lamborghini Countach Poster", image: "assets/designs/lamborghini-countach-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-17", name: "BMW M4 Poster", image: "assets/designs/bmw-m4-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
+  { id: "rm-18", name: "Mercedes AMG GT Poster", image: "assets/designs/mercedes-amg-gt-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
 ];
 
 // Base catalog products (unframed + framed) — these drive the size/qty logic
@@ -53,7 +53,7 @@ const CATALOG_PRODUCTS = [
     sizes: [
       { size: "A3", price: 40 },
       { size: "A4", price: 30 },
-      { size: "A5", price: 20 },
+      { size: "A5", price: 25 },
     ],
   },
   {
@@ -77,7 +77,7 @@ const CATALOG_PRODUCTS = [
 ];
 
 // Custom poster pricing (per finished poster, A3)
-const CUSTOM_FRAMED_PRICE = 200;   // A3, black frame — matches the single framed poster price
+const CUSTOM_FRAMED_PRICE = 250;   // A3, black frame — matches the single framed poster price
 const CUSTOM_UNFRAMED_PRICE = 40;  // A3, unframed — matches the unframed A3 price, min. 10
 
 // Previously-sold posters for the homepage trust slideshow
@@ -103,7 +103,7 @@ const PREVIOUS_WORK = [
 
 // Featured offers shown in the homepage "Offers & Bundles" section
 const OFFERS = [
-  { title: "3 Framed A3 Posters", desc: "Upload 3 of your own photos — see them framed side by side on a wall before you order.", price: 540, link: "custom.html?bundle=framed3" },
+  { title: "3 Framed A3 Posters", desc: "Upload 3 of your own photos — see them framed side by side on a wall before you order.", price: 600, link: "custom.html?bundle=framed3" },
   { title: "10 Unframed Posters", desc: "Upload 10 of your own photos — see the whole collection mocked up on a wall. Price depends on size (A3/A4/A5).", price: 400, link: "custom.html?bundle=unframed10" },
 ];
 
