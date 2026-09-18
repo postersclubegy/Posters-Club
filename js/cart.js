@@ -1,5 +1,5 @@
 /* =========================================================
-   POSTERS CLUB — CART ENGINE
+   POSTERS CLUB - CART ENGINE
    Cart lives in the browser's localStorage for this dummy
    version (Phase 2 will move this to a real database).
    ========================================================= */

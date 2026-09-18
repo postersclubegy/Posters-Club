@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Checkout — Posters Club</title>
+<title>Checkout | Posters Club</title>
 <meta name="description" content="Review your order and enter your delivery details to place your Posters Club order." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="css/style.css" />
 <style>
   .checkout-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 34px; align-items: start; }
@@ -38,13 +39,22 @@
 
 <section class="section-tight">
   <div class="container">
+    <div class="deposit-callout" id="deposit-banner">
+      <span class="icon">💬</span>
+      <div class="text">
+        <strong>Heads up: we'll contact you on WhatsApp to arrange a <span data-deposit-pct>40</span>% deposit.</strong>
+        <span>Right after you place your order, we'll message you to confirm the details and take the deposit.</span>
+      </div>
+      <div class="amount"><small>Your deposit</small><span data-deposit-amount>0 EGP</span></div>
+    </div>
+
     <div class="checkout-grid">
 
       <div>
         <div id="cart-list"></div>
 
         <div id="order-form-wrap" style="margin-top:10px;">
-          <h2 style="font-size:1.2rem;">Delivery Details</h2>
+          <h2 style="font-size:1.2rem;">Who are we delivering to?</h2>
           <form id="order-form" novalidate>
             <div class="field" id="f-name">
               <label>Full Name</label>
@@ -57,13 +67,16 @@
                 <input type="tel" name="phone" placeholder="01XXXXXXXXX" />
                 <div class="error-text">Please enter a valid phone number.</div>
               </div>
-              <div class="field" id="f-phone2">
-                <label>Second Phone Number <span style="color:var(--text-dim); font-weight:500;">(optional)</span></label>
-                <input type="tel" name="phone2" placeholder="01XXXXXXXXX" />
+              <div class="field" id="f-whatsapp">
+                <label>WhatsApp Number <span style="color:var(--accent); font-weight:700;">*</span></label>
+                <input type="tel" name="whatsapp" placeholder="01XXXXXXXXX" />
+                <div class="error-text">Please enter a valid WhatsApp number.</div>
+                <label class="check-inline"><input type="checkbox" id="same-as-phone" /> Same as my phone number</label>
+                <div class="hint">This is where we'll message you to confirm your order and arrange the deposit.</div>
               </div>
             </div>
 
-            <h2 style="font-size:1.2rem; margin-top:28px;">Address</h2>
+            <h2 style="font-size:1.2rem; margin-top:28px;">Where to?</h2>
             <div class="field-row">
               <div class="field" id="f-building">
                 <label>Building</label>
@@ -94,19 +107,16 @@
               </div>
             </div>
 
-            <h2 style="font-size:1.2rem; margin-top:28px;">Your Location</h2>
+            <h2 style="font-size:1.2rem; margin-top:28px;">Pin your location <span style="color:var(--text-dim); font-weight:500;">(optional, but helps us find you fast)</span></h2>
             <div class="field">
-              <label>Google Maps Link <span style="color:var(--text-dim); font-weight:500;">(optional, but helps us find you fast)</span></label>
-              <input type="url" name="mapsLink" placeholder="Paste your Google Maps link here" />
-              <div class="hint">
-                On Google Maps: drop a pin on your location → tap <strong>Share</strong> → <strong>Copy link</strong> → paste it above.
-                <a href="https://maps.google.com" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700;">Open Google Maps →</a>
-              </div>
+              <input type="hidden" name="mapsLink" id="maps-link" />
+              <button type="button" class="btn btn-outline btn-block" id="open-map-btn">📍 Open the map and pin my location</button>
+              <div class="map-status" id="map-status" style="display:none;"></div>
             </div>
 
-            <h2 style="font-size:1.2rem; margin-top:28px;">Notes for us <span style="color:var(--text-dim); font-weight:500;">(optional)</span></h2>
+            <h2 style="font-size:1.2rem; margin-top:28px;">Anything we should know? <span style="color:var(--text-dim); font-weight:500;">(optional)</span></h2>
             <div class="field">
-              <textarea name="notes" rows="3" placeholder="Anything else we should know about your order or delivery?"></textarea>
+              <textarea name="notes" rows="3" placeholder="Special requests, best time to reach you, anything at all."></textarea>
             </div>
           </form>
         </div>
@@ -117,9 +127,17 @@
         <div class="summary-line"><span>Subtotal</span><span id="sum-subtotal">0 EGP</span></div>
         <div class="summary-line"><span>Delivery</span><span id="sum-delivery">85 EGP</span></div>
         <div class="summary-line total"><span>Total</span><span id="sum-total">0 EGP</span></div>
+        <div class="summary-line deposit"><span id="sum-deposit-label">40% deposit</span><span id="sum-deposit">0 EGP</span></div>
+        <div class="deposit-callout compact">
+          <span class="icon">💬</span>
+          <div class="text">
+            <strong><span data-deposit-pct>40</span>% deposit on WhatsApp</strong>
+            <span>After you order, we'll message you to arrange your deposit of <b data-deposit-amount>0 EGP</b>.</span>
+          </div>
+        </div>
         <button class="btn btn-primary btn-block" id="place-order-btn" style="margin-top:16px;">Place Order</button>
         <p class="hint" style="text-align:center;" id="place-order-status"></p>
-        <p class="hint" style="text-align:center;">Payment: pay on confirmation via InstaPay — we'll message you the details after we confirm your order.</p>
+        <p class="hint" style="text-align:center;">Nothing to pay on this page. We'll take care of the deposit with you on WhatsApp.</p>
       </div>
 
     </div>
@@ -135,6 +153,27 @@
   </div>
 </footer>
 
+<div class="map-modal" id="map-modal" aria-hidden="true">
+  <div class="map-panel" role="dialog" aria-label="Pin your delivery location">
+    <div class="map-head">
+      <h3>Pin your delivery location</h3>
+      <button type="button" class="lightbox-close" id="map-close" aria-label="Close" style="position:static;">&times;</button>
+    </div>
+    <div class="map-tools">
+      <input type="text" id="map-search" placeholder="Search your area or street (e.g. New Cairo)" />
+      <button type="button" class="btn btn-outline btn-sm" id="map-search-btn">Search</button>
+      <button type="button" class="btn btn-outline btn-sm" id="map-locate-btn">📍 Use my location</button>
+    </div>
+    <div id="map-canvas"></div>
+    <p class="hint" id="map-hint">Tap the map or drag the pin so it sits right on your door.</p>
+    <div class="map-actions">
+      <button type="button" class="btn btn-outline" id="map-cancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="map-confirm" disabled>Confirm this location</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
@@ -143,5 +182,6 @@
 <script src="js/main.js"></script>
 <script src="js/order-notify.js"></script>
 <script src="js/checkout.js"></script>
+<script src="js/map-picker.js"></script>
 </body>
 </html>

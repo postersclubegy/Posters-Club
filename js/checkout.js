@@ -1,5 +1,5 @@
 /* =========================================================
-   POSTERS CLUB — CHECKOUT PAGE LOGIC
+   POSTERS CLUB - CHECKOUT PAGE LOGIC
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -16,11 +16,11 @@ function renderCartList() {
   if (cart.length === 0) {
     wrap.innerHTML = `
       <div class="empty-state">
-        <h3>Your cart is empty</h3>
-        <p>Add a poster from the shop or create a custom one to get started.</p>
+        <h3>Your cart is feeling empty</h3>
+        <p>Grab a poster from the shop or make your own to get started.</p>
         <div style="display:flex; gap:12px; justify-content:center; margin-top:10px;">
-          <a href="products.html" class="btn btn-primary">Browse Designs</a>
-          <a href="custom.html" class="btn btn-outline">Create Custom Poster</a>
+          <a href="products.html" class="btn btn-primary">Browse the Shop</a>
+          <a href="custom.html" class="btn btn-outline">Make Your Own</a>
         </div>
       </div>`;
     formWrap.style.display = "none";
@@ -86,17 +86,51 @@ function renderCartList() {
   });
 }
 
+function depositFor(total) {
+  return Math.ceil((total * SITE_CONFIG.depositPercent) / 100);
+}
+
 function renderSummary() {
   const subtotal = cartSubtotal();
   const cart = getCart();
   const delivery = cart.length ? SITE_CONFIG.deliveryFeeEGP : 0;
+  const total = subtotal + delivery;
   document.getElementById("sum-subtotal").textContent = formatMoney(subtotal);
   document.getElementById("sum-delivery").textContent = formatMoney(delivery);
-  document.getElementById("sum-total").textContent = formatMoney(subtotal + delivery);
+  document.getElementById("sum-total").textContent = formatMoney(total);
+  const depositText = formatMoney(depositFor(total));
+  document.getElementById("sum-deposit-label").textContent = `${SITE_CONFIG.depositPercent}% deposit`;
+  document.getElementById("sum-deposit").textContent = depositText;
+  document.querySelectorAll("[data-deposit-pct]").forEach((el) => { el.textContent = SITE_CONFIG.depositPercent; });
+  document.querySelectorAll("[data-deposit-amount]").forEach((el) => { el.textContent = depositText; });
+  document.getElementById("deposit-banner").style.display = cart.length ? "flex" : "none";
 }
 
-const REQUIRED_FIELDS = ["fullName", "phone", "building", "apartment", "street", "area", "city"];
+const REQUIRED_FIELDS = ["fullName", "phone", "whatsapp", "building", "apartment", "street", "area", "city"];
 const PHONE_RE = /^01[0-25]\d{8}$/;
+
+// Accepts 01XXXXXXXXX, +2010..., 002010..., with spaces or dashes
+function normalizePhone(value) {
+  let v = (value || "").replace(/[\s\-()]/g, "");
+  if (v.startsWith("+20")) v = "0" + v.slice(3);
+  else if (v.startsWith("0020")) v = "0" + v.slice(4);
+  else if (v.startsWith("20") && v.length === 12) v = "0" + v.slice(2);
+  return v;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("order-form");
+  const phoneInput = form.querySelector('[name="phone"]');
+  const waInput = form.querySelector('[name="whatsapp"]');
+  const same = document.getElementById("same-as-phone");
+  if (!same) return;
+  const sync = () => { if (same.checked) waInput.value = phoneInput.value; };
+  same.addEventListener("change", sync);
+  phoneInput.addEventListener("input", sync);
+  waInput.addEventListener("input", () => {
+    if (same.checked && waInput.value !== phoneInput.value) same.checked = false;
+  });
+});
 
 async function handlePlaceOrder() {
   const cart = getCart();
@@ -114,12 +148,17 @@ async function handlePlaceOrder() {
   });
 
   const phoneWrap = document.getElementById("f-phone");
-  const phoneValid = PHONE_RE.test((data.phone || "").trim());
+  const phoneValid = PHONE_RE.test(normalizePhone(data.phone));
   phoneWrap.classList.toggle("invalid", !phoneValid);
   if (!phoneValid) valid = false;
 
+  const waWrap = document.getElementById("f-whatsapp");
+  const waValid = PHONE_RE.test(normalizePhone(data.whatsapp));
+  waWrap.classList.toggle("invalid", !waValid);
+  if (!waValid) valid = false;
+
   if (!valid) {
-    showToast("Please fill in all required fields.");
+    showToast("Oops, a few required fields are still empty.");
     document.querySelector(".field.invalid")?.scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
@@ -133,8 +172,8 @@ async function handlePlaceOrder() {
     createdAt: new Date().toLocaleString(),
     customer: {
       fullName: data.fullName.trim(),
-      phone: data.phone.trim(),
-      phone2: (data.phone2 || "").trim(),
+      phone: normalizePhone(data.phone),
+      whatsapp: normalizePhone(data.whatsapp),
       building: data.building.trim(),
       apartment: data.apartment.trim(),
       street: data.street.trim(),
@@ -147,6 +186,8 @@ async function handlePlaceOrder() {
     subtotal,
     delivery,
     total: subtotal + delivery,
+    depositPercent: SITE_CONFIG.depositPercent,
+    deposit: depositFor(subtotal + delivery),
     paymentStatus: "Pending",
   };
 
@@ -162,7 +203,7 @@ async function handlePlaceOrder() {
       notifyResult = await notifyOrder(order);
     }
   } catch (e) {
-    // Never block the order on a failed notification — the customer
+    // Never block the order on a failed notification - the customer
     // still gets their confirmation and download fallback either way.
   }
   order.emailSent = notifyResult.emailSent;

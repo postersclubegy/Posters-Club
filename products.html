@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Shop Posters — Ready-Made Designs | Posters Club</title>
+<title>Shop Ready-Made Posters | Posters Club</title>
 <meta name="description" content="Shop ready-made A3 framed wall poster designs, or create your own custom poster from your own photos." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
@@ -32,14 +32,14 @@
 <div class="page-head container">
   <div class="breadcrumb"><a href="index.html">Home</a> / Shop</div>
   <h1>Shop Posters</h1>
-  <p>All prices below are real — 250 EGP for any A3 framed design.</p>
+  <p>Every A3 framed poster is 250 EGP. Simple as that.</p>
 </div>
 
 <section class="section-tight" id="ready-made">
   <div class="container">
     <div class="section-head" style="text-align:left; margin-bottom:10px;">
       <h2 style="font-size:1.5rem;">Ready-Made Designs</h2>
-      <p style="margin:0;">Pick a finished design — no editing needed. Click a poster to see it larger.</p>
+      <p style="margin:0;">Found one you love? Add it to your order. Tap any poster to see it bigger.</p>
     </div>
     <div class="filter-bar" id="filter-bar">
     </div>
@@ -91,7 +91,7 @@
 
   function buildFilterBar() {
     // Only show a Framed/Unframed choice if the catalog actually contains
-    // both — with only one type on offer, a filter for the other type just
+    // both - with only one type on offer, a filter for the other type just
     // led to a confusing empty grid, so it's hidden until it's meaningful.
     const bar = document.getElementById("filter-bar");
     const types = [...new Set(READY_MADE_DESIGNS.map((p) => p.type))];

@@ -1,10 +1,10 @@
 /* =========================================================
-   POSTERS CLUB — ORDER NOTIFICATIONS (Phase 2, optional)
+   POSTERS CLUB - ORDER NOTIFICATIONS (Phase 2, optional)
    Sends the order to the owner by email (via EmailJS) and,
    if configured, uploads custom poster images to Supabase
    Storage first so the email can include permanent links.
 
-   Both integrations are OFF by default — see js/config.js.
+   Both integrations are OFF by default - see js/config.js.
    Nothing here runs, and nothing breaks, until you fill in
    the emailjs/supabase values. See README.md for setup steps.
    ========================================================= */
@@ -49,7 +49,7 @@ async function uploadCustomImages(order) {
           anyUploaded = true;
         }
       } catch (e) {
-        // Skip this one image and keep going — the customer's download
+        // Skip this one image and keep going - the customer's download
         // fallback on the confirmation page still has every image.
       }
     }
@@ -82,10 +82,11 @@ async function sendOrderEmail(order) {
       created_at: order.createdAt,
       customer_name: order.customer.fullName,
       customer_phone: order.customer.phone,
-      customer_phone2: order.customer.phone2 || "-",
+      customer_phone2: "WhatsApp: " + (order.customer.whatsapp || "-"),
       customer_address: `Building ${order.customer.building}, Apt ${order.customer.apartment}, ${order.customer.street}, ${order.customer.area}, ${order.customer.city}`,
       maps_link: order.customer.mapsLink || "-",
-      notes: order.customer.notes || "-",
+      notes: (order.customer.notes || "-") + `\n\nDEPOSIT TO REQUEST ON WHATSAPP (${order.depositPercent}%): ${order.deposit} EGP`,
+      deposit: order.deposit,
       items_summary: buildItemsSummary(order),
       images_list: buildImagesList(order),
       subtotal: order.subtotal,
@@ -101,7 +102,7 @@ async function sendOrderEmail(order) {
 
 // Orchestrates both steps. Always resolves (never throws) so a failed or
 // unconfigured integration never blocks the customer from completing
-// their order — the download fallback on the confirmation page always
+// their order - the download fallback on the confirmation page always
 // still works regardless of what happens here.
 async function notifyOrder(order) {
   const result = { imagesUploaded: false, emailSent: false };

@@ -1,5 +1,5 @@
 /* =========================================================
-   POSTERS CLUB — PRODUCT DATA (DUMMY)
+   POSTERS CLUB - PRODUCT DATA (DUMMY)
    Every price/image here is a TEMPORARY DUMMY VALUE.
    To update later: change the text/numbers below, or replace
    the image URLs with links to your own photos.
@@ -8,17 +8,17 @@
 
 // All images on this site are now real photos pulled from the live
 // @postersclub.egy Instagram feed (assets/previous-work/instagram/).
-// Prices below are still TEMPORARY DUMMY VALUEs — only unframed/framed/
+// Prices below are still TEMPORARY DUMMY VALUEs - only unframed/framed/
 // custom base pricing further down is real. Swap any image by changing
 // its file name here; swap the whole photo pool by re-running the
 // Instagram pull (ask me) since those signed image links expire.
 
-// Ready-made designs — each is a real product customers can add straight to cart.
+// Ready-made designs - each is a real product customers can add straight to cart.
 // All framed designs are a flat 200 EGP (matches the standalone framed poster price).
 // Each image (except Vini Jr, kept as the original photo per your note) is the
-// actual design cropped from your Instagram post — or, where the Instagram
+// actual design cropped from your Instagram post - or, where the Instagram
 // photo was too small/angled to look good, a high-quality version of that same
-// design — composited into the same A3 black-frame look used in the custom
+// design - composited into the same A3 black-frame look used in the custom
 // poster designer. More designs to come once you send the next batch.
 const READY_MADE_DESIGNS = [
   { id: "rm-01", name: "Vini Jr. Framed Poster", image: "assets/previous-work/instagram/ig-01.jpg", size: "A3", type: "Framed", price: 250, tag: "Bestseller" },
@@ -41,7 +41,7 @@ const READY_MADE_DESIGNS = [
   { id: "rm-18", name: "Mercedes AMG GT Poster", image: "assets/designs/mercedes-amg-gt-framed.jpg", size: "A3", type: "Framed", price: 250, tag: "New" },
 ];
 
-// Base catalog products (unframed + framed) — these drive the size/qty logic
+// Base catalog products (unframed + framed) - these drive the size/qty logic
 const CATALOG_PRODUCTS = [
   {
     id: "unframed-poster",
@@ -66,7 +66,7 @@ const CATALOG_PRODUCTS = [
     sizes: [
       { size: "A3", price: 200 },
     ],
-    // Bundle offers for A3 framed posters — SUGGESTED discount tiers, tell me
+    // Bundle offers for A3 framed posters - SUGGESTED discount tiers, tell me
     // if you'd rather set different bundle prices.
     offers: [
       { label: "1 Poster", qty: 1, total: 200 },
@@ -77,8 +77,8 @@ const CATALOG_PRODUCTS = [
 ];
 
 // Custom poster pricing (per finished poster, A3)
-const CUSTOM_FRAMED_PRICE = 250;   // A3, black frame — matches the single framed poster price
-const CUSTOM_UNFRAMED_PRICE = 40;  // A3, unframed — matches the unframed A3 price, min. 10
+const CUSTOM_FRAMED_PRICE = 250;   // A3, black frame - matches the single framed poster price
+const CUSTOM_UNFRAMED_PRICE = 40;  // A3, unframed - matches the unframed A3 price, min. 10
 
 // Previously-sold posters for the homepage trust slideshow
 // Pulled from the real @postersclub.egy Instagram feed.
@@ -103,8 +103,8 @@ const PREVIOUS_WORK = [
 
 // Featured offers shown in the homepage "Offers & Bundles" section
 const OFFERS = [
-  { title: "3 Framed A3 Posters", desc: "Upload 3 of your own photos — see them framed side by side on a wall before you order.", price: 600, link: "custom.html?bundle=framed3" },
-  { title: "10 Unframed Posters", desc: "Upload 10 of your own photos — see the whole collection mocked up on a wall. Price depends on size (A3/A4/A5).", price: 400, link: "custom.html?bundle=unframed10" },
+  { title: "3 Framed A3 Posters", desc: "Pick 3 of your favorite photos and see them framed side by side on a wall before you order.", price: 600, link: "custom.html?bundle=framed3" },
+  { title: "10 Unframed Posters", desc: "Turn 10 of your photos into a whole wall of posters. Choose A3, A4 or A5 and the price follows the size.", price: 400, link: "custom.html?bundle=unframed10" },
 ];
 
 // Instagram gallery section at the bottom of the homepage

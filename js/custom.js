@@ -1,8 +1,8 @@
 /* =========================================================
-   POSTERS CLUB — CUSTOM POSTER DESIGNER
+   POSTERS CLUB - CUSTOM POSTER DESIGNER
    Each uploaded image becomes its own poster. Customer chooses
    Framed (A3 black frame) or Unframed (A3/A4/A5), Stretch or
-   Crop, and — when cropping — can drag to reposition and use a
+   Crop, and - when cropping - can drag to reposition and use a
    zoom slider. A live "wall preview" shows the whole set mocked
    up together on a wall.
 
@@ -16,18 +16,18 @@
    NOTE FOR PHASE 2: right now the finished poster images are
    compressed and stored in the browser only. Once real image
    storage is connected, `finalizePoster()` will upload the
-   full-resolution file instead — no other code changes needed.
+   full-resolution file instead - no other code changes needed.
    ========================================================= */
 
 const POSTER_W = 900;                 // individual-card canvas raster width (A3 ratio)
 const POSTER_H = Math.round(POSTER_W * (420 / 297));
-const LOW_RES_MIN_SIDE = 1500;        // px — below this we warn about print quality
+const LOW_RES_MIN_SIDE = 1500;        // px - below this we warn about print quality
 const UNFRAMED_BUNDLE_COUNT = 10;
 const FRAMED_BUNDLE_COUNT = 3;
 const FRAMED_BUNDLE_TOTAL = 600;     // flat price for the 3-poster framed bundle
 const UNFRAMED_SIZES = CATALOG_PRODUCTS.find((p) => p.id === "unframed-poster").sizes; // [{size,price}]
 
-// Real paper sizes in mm (portrait) — used only to scale the wall preview realistically
+// Real paper sizes in mm (portrait) - used only to scale the wall preview realistically
 const SIZE_MM = { A3: { w: 297, h: 420 }, A4: { w: 210, h: 297 }, A5: { w: 148, h: 210 } };
 
 let posters = []; // { id, img, naturalW, naturalH, fit, zoom, offsetX, offsetY }
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addMoreBtn = document.getElementById("add-more-btn");
   const addOrderBtn = document.getElementById("add-order-btn");
 
-  // uploadBtn lives INSIDE uploadZone — without stopping the click from
+  // uploadBtn lives INSIDE uploadZone - without stopping the click from
   // bubbling, tapping the button fired fileInput.click() twice for one tap
   // (once from the button's own listener, once from the zone's). On a
   // desktop file dialog that's mostly harmless; a native mobile photo
@@ -139,14 +139,14 @@ function setPosterMode(mode) {
     : "A3 · Black frame · 250 EGP each";
 
   document.getElementById("mode-intro").innerHTML = isUnframed
-    ? `Upload exactly <strong>${UNFRAMED_BUNDLE_COUNT} photos</strong> — each becomes its own <strong>unframed</strong> poster in your chosen size, and you'll see them all mocked up together on a wall.`
+    ? `Upload exactly <strong>${UNFRAMED_BUNDLE_COUNT} photos</strong> and each one becomes its own <strong>unframed</strong> poster in the size you pick. You'll see them all together on a wall before you order.`
     : framedIsBundle
-      ? `Upload exactly <strong>${FRAMED_BUNDLE_COUNT} photos</strong> for this bundle — each becomes an <strong>A3, black-framed</strong> poster, previewed hanging together on a wall.`
-      : `Upload your photos — each image becomes its own <strong>A3, black-framed</strong> poster. Preview every poster before you order.`;
+      ? `Upload exactly <strong>${FRAMED_BUNDLE_COUNT} photos</strong> for this bundle. Each one becomes an <strong>A3, black-framed</strong> poster, and you'll see all of them hanging together on a wall.`
+      : `Upload your photos and each one becomes its own <strong>A3, black-framed</strong> poster. See every one before you order.`;
 
   document.getElementById("mode-subline").textContent = isUnframed
-    ? `All posters are unframed, in your chosen size. Choose how each image fits.`
-    : "All posters are A3 · Black Frame. Choose how each image fits inside the frame.";
+    ? `All posters are unframed, in the size you picked. Choose how each photo fits.`
+    : "Every poster is A3 in a black frame. Choose how each photo fits inside.";
 
   renderDesigner();
 }
@@ -160,7 +160,7 @@ function handleFiles(fileList) {
   // Some mobile browsers / photo-picker sources (notably some Android file
   // providers) hand over files with an empty or missing `file.type`, so a
   // strict MIME-type-only filter can silently drop every single file with
-  // zero feedback — which looks exactly like "nothing happened after I
+  // zero feedback - which looks exactly like "nothing happened after I
   // uploaded". Fall back to checking the file extension in that case, and
   // always tell the user if everything got filtered out instead of just
   // doing nothing.
@@ -169,19 +169,19 @@ function handleFiles(fileList) {
     return /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(f.name || "");
   });
   if (files.length === 0) {
-    showToast("Those don't look like image files — please choose JPG or PNG photos.");
+    showToast("That doesn't look like an image. Please choose JPG or PNG photos.");
     return;
   }
 
   const cap = getCap();
   const remaining = cap - posters.length;
   if (remaining <= 0) {
-    showToast(`This bundle only takes ${cap} photos. Remove one first if you'd like to swap it.`);
+    showToast(`This bundle takes ${cap} photos. Remove one first if you want to swap it.`);
     return;
   }
   const accepted = files.slice(0, remaining);
   if (accepted.length < files.length) {
-    showToast(`Only added ${accepted.length} — this bundle is capped at ${cap} photos.`);
+    showToast(`Only ${accepted.length} added. This bundle is capped at ${cap} photos.`);
   }
 
   showToast(`Processing ${accepted.length} photo${accepted.length === 1 ? "" : "s"}...`);
@@ -189,12 +189,12 @@ function handleFiles(fileList) {
   accepted.forEach((file) => {
     const reader = new FileReader();
     reader.onerror = () => {
-      showToast(`Couldn't read "${file.name}" — try a different photo.`);
+      showToast(`Couldn't read "${file.name}". Try a different photo.`);
     };
     reader.onload = (e) => {
       const img = new Image();
       img.onerror = () => {
-        showToast(`"${file.name}" couldn't be opened as an image — try saving it as JPG or PNG first.`);
+        showToast(`"${file.name}" couldn't be opened. Try saving it as JPG or PNG first.`);
       };
       img.onload = () => {
         posters.push({
@@ -214,7 +214,7 @@ function handleFiles(fileList) {
     try {
       reader.readAsDataURL(file);
     } catch (err) {
-      showToast(`Couldn't read "${file.name}" — try a different photo.`);
+      showToast(`Couldn't read "${file.name}". Try a different photo.`);
     }
   });
 }
@@ -229,7 +229,7 @@ function renderDesigner() {
 
   const isUnframed = posterMode === "unframed";
   // Individual preview boxes are called "frames" by design, so when the wall
-  // preview shrinks for A4/A5, these need to visibly shrink too — otherwise
+  // preview shrinks for A4/A5, these need to visibly shrink too - otherwise
   // it looks like only the wall picture changed size and the frames didn't.
   const sizeScale = isUnframed ? SIZE_MM[unframedSize].w / SIZE_MM.A3.w : 1;
   const frameMaxWidth = Math.round(260 * sizeScale);
@@ -330,7 +330,7 @@ function wirePanning(canvas, p) {
     window.removeEventListener("pointercancel", endDrag);
   }
 
-  // Move/up are tracked on `window`, not the canvas — on a phone the finger
+  // Move/up are tracked on `window`, not the canvas - on a phone the finger
   // very quickly moves outside the small canvas element's bounds, and a
   // mouse mostly doesn't, which is why this only broke on mobile.
   canvas.addEventListener("pointerdown", (e) => {
@@ -381,20 +381,20 @@ function drawPoster(canvas, p) {
 function renderResNote(el, p) {
   const shortSide = Math.min(p.naturalW, p.naturalH);
   if (shortSide < LOW_RES_MIN_SIDE) {
-    el.innerHTML = `<div class="res-warning">⚠️ This image (${p.naturalW}×${p.naturalH}px) may look low quality when printed. It will still print, but a higher-resolution photo will look sharper.</div>`;
+    el.innerHTML = `<div class="res-warning">⚠️ This photo (${p.naturalW}×${p.naturalH}px) may look a little soft when printed. It will still print, but a higher-resolution photo will look sharper.</div>`;
   } else {
-    el.innerHTML = `<div class="res-ok">✓ Good resolution for print</div>`;
+    el.innerHTML = `<div class="res-ok">✓ Looks great for print</div>`;
   }
 }
 
 /* ---------- wall preview ---------- */
 
 // The wall/frame area itself is a FIXED size (always computed from A3, for
-// this poster count) — switching A3/A4/A5 never resizes that outer frame.
+// this poster count) - switching A3/A4/A5 never resizes that outer frame.
 // The posters inside shrink/grow to their real selected size, staying
 // closely grouped together (gap scales down WITH them, so they don't drift
 // apart), and that whole tighter cluster is centered inside the fixed
-// frame — leaving a uniform border of extra wall around it for A4/A5,
+// frame - leaving a uniform border of extra wall around it for A4/A5,
 // rather than stretching the gaps between posters to fill the frame.
 function computeWallLayout() {
   const count = posters.length;
@@ -411,7 +411,7 @@ function computeWallLayout() {
     return { slotW: sizeMM.w + frameBorderMM * 2, slotH: sizeMM.h + frameBorderMM * 2 };
   }
 
-  // Fixed reference frame size — always from A3, regardless of selection.
+  // Fixed reference frame size - always from A3, regardless of selection.
   const refSlot = slotDims(SIZE_MM.A3);
   const fixedTotalWmm = marginMM * 2 + cols * refSlot.slotW + (cols - 1) * baseGapMM;
   const fixedTotalHmm = marginMM * 2 + rows * refSlot.slotH + (rows - 1) * baseGapMM;
@@ -545,6 +545,6 @@ function addCustomOrderToCart() {
     });
     window.location.href = "checkout.html";
   } catch (err) {
-    showToast("Couldn't save all images — try fewer photos for this demo version.");
+    showToast("Couldn't save all your photos. Try adding fewer at once.");
   }
 }

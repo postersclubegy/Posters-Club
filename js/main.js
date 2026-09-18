@@ -1,5 +1,5 @@
 /* =========================================================
-   POSTERS CLUB — SHARED SITE BEHAVIOR
+   POSTERS CLUB - SHARED SITE BEHAVIOR
    Nav toggle, mobile menu, slideshow, WhatsApp link, footer.
    ========================================================= */
 
