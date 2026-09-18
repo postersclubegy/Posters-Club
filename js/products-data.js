@@ -35,6 +35,10 @@ const READY_MADE_DESIGNS = [
   { id: "rm-12", name: "BMW E30 M3 Poster", image: "assets/designs/bmw-e30-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
   { id: "rm-13", name: "Fight Club Poster", image: "assets/designs/fightclub-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
   { id: "rm-14", name: "The Godfather Poster", image: "assets/designs/godfather-framed.jpg", size: "A3", type: "Framed", price: 200, tag: null },
+  { id: "rm-15", name: "Porsche 911 GT3 RS Poster", image: "assets/designs/porsche-gt3rs-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-16", name: "Lamborghini Countach Poster", image: "assets/designs/lamborghini-countach-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-17", name: "BMW M4 Poster", image: "assets/designs/bmw-m4-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
+  { id: "rm-18", name: "Mercedes AMG GT Poster", image: "assets/designs/mercedes-amg-gt-framed.jpg", size: "A3", type: "Framed", price: 200, tag: "New" },
 ];
 
 // Base catalog products (unframed + framed) — these drive the size/qty logic
