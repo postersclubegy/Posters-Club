@@ -192,7 +192,7 @@
         ${i === OFFERS.length - 1 ? `<span class="offer-tag">Best Value</span>` : ""}
         <h3>${o.title}</h3>
         <p style="margin:0;">${o.desc}</p>
-        <div class="price">${formatMoney(o.price)}</div>
+        <div class="price">${o.oldPrice ? `<s class="old-price">${formatMoney(o.oldPrice)}</s> ` : ""}${formatMoney(o.price)}${o.oldPrice ? ` <span class="save-tag">Save ${o.oldPrice - o.price} EGP</span>` : ""}</div>
         <a href="${o.link}" class="btn btn-primary btn-sm btn-block">View Offer</a>
       </div>
     `).join("");

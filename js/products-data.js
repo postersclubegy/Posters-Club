@@ -103,7 +103,7 @@ const PREVIOUS_WORK = [
 
 // Featured offers shown in the homepage "Offers & Bundles" section
 const OFFERS = [
-  { title: "3 Framed A3 Posters", desc: "Pick 3 of your favorite photos and see them framed side by side on a wall before you order.", price: 600, link: "custom.html?bundle=framed3" },
+  { title: "3 Framed A3 Posters", desc: "Pick 3 of your favorite photos and see them framed side by side on a wall before you order.", price: 600, oldPrice: 750, link: "custom.html?bundle=framed3" },
   { title: "10 Unframed Posters", desc: "Turn 10 of your photos into a whole wall of posters. Choose A3, A4 or A5 and the price follows the size.", price: 400, link: "custom.html?bundle=unframed10" },
 ];
 

@@ -135,7 +135,7 @@ function setPosterMode(mode) {
 
   const isUnframed = mode === "unframed";
   document.getElementById("mode-card-framed-sub").textContent = framedIsBundle
-    ? `A3 · Black frame · Bundle of ${FRAMED_BUNDLE_COUNT} for ${FRAMED_BUNDLE_TOTAL} EGP`
+    ? `A3 · Black frame · ${FRAMED_BUNDLE_COUNT} for ${FRAMED_BUNDLE_TOTAL} EGP (instead of ${CUSTOM_FRAMED_PRICE * FRAMED_BUNDLE_COUNT})`
     : "A3 · Black frame · 250 EGP each";
 
   document.getElementById("mode-intro").innerHTML = isUnframed
