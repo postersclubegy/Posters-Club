@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Posters Club | Custom & Ready-Made Wall Posters in Egypt</title>
 <meta name="description" content="Posters Club sells framed and unframed wall posters, ready-made designs, and fully custom posters made from your own photos. A3/A4/A5, fast delivery across Egypt." />
-<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="logo"><img src="assets/logo-mark.svg" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
+    <a href="index.html" class="logo"><img src="assets/logo-mark.png" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
     <ul class="nav-links">
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="products.html">Shop</a></li>
@@ -142,7 +142,7 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <a href="index.html" class="logo"><img src="assets/logo-mark.svg" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
+        <a href="index.html" class="logo"><img src="assets/logo-mark.png" class="logo-mark" alt="Posters Club logo" /> Posters Club</a>
         <p style="margin-top:14px; max-width:320px;">Framed, unframed and fully custom wall posters, made for bedrooms, gaming setups and offices across Egypt.</p>
       </div>
       <div>
@@ -192,7 +192,7 @@
         ${i === OFFERS.length - 1 ? `<span class="offer-tag">Best Value</span>` : ""}
         <h3>${o.title}</h3>
         <p style="margin:0;">${o.desc}</p>
-        <div class="price">${o.oldPrice ? `<s class="old-price">${formatMoney(o.oldPrice)}</s> ` : ""}${formatMoney(o.price)}${o.oldPrice ? ` <span class="save-tag">Save ${o.oldPrice - o.price} EGP</span>` : ""}</div>
+        <div class="price-wrap">${o.oldPrice ? `<s class="old-price">${formatMoney(o.oldPrice)}</s>` : ""}<div class="price">${formatMoney(o.price)}</div>${o.oldPrice ? `<span class="save-tag">Save ${o.oldPrice - o.price} EGP</span>` : ""}</div>
         <a href="${o.link}" class="btn btn-primary btn-sm btn-block">View Offer</a>
       </div>
     `).join("");

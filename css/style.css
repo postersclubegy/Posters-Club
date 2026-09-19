@@ -1,22 +1,22 @@
 /* =========================================================
    POSTERS CLUB - Design System
-   Colors come from the logo: teal #14A87D + royal blue #1E24B8
-   on a pure black canvas. Easy-to-edit variables live at the top.
+   Colors come from the logo: amber #FFAC16 on navy #1F1F41.
+   Easy-to-edit variables live at the top.
    ========================================================= */
 
 :root {
-  --bg: #000000;
-  --bg-alt: #060606;
-  --surface: #0e0e0e;
-  --surface-2: #171717;
-  --border: #262626;
+  --bg: #14142F;
+  --bg-alt: #101028;
+  --surface: #1D1D42;
+  --surface-2: #26264F;
+  --border: #34345F;
   --text: #ffffff;
-  --text-dim: #a1a1a1;
-  --accent-rgb: 20,168,125;     /* teal - logo background */
-  --accent2-rgb: 30,36,184;     /* royal blue - logo rings/icon */
+  --text-dim: #A9A9C9;
+  --accent-rgb: 255,172,22;     /* amber - logo color */
+  --accent2-rgb: 46,46,110;     /* lighter navy */
   --accent: rgb(var(--accent-rgb));
   --accent-2: rgb(var(--accent2-rgb));
-  --on-accent: #04110d;         /* text color placed on top of teal */
+  --on-accent: #14142F;         /* text color placed on top of amber */
   --warn: #ffb703;
   --success: #2ecc71;
   --radius: 10px;
@@ -65,7 +65,7 @@ button { font-family: inherit; cursor: pointer; }
 .btn:active { transform: scale(.98); }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover { background: #ffffff; color: #000; }
-.btn-outline { background: transparent; color: var(--text); border-color: #3a3a3a; }
+.btn-outline { background: transparent; color: var(--text); border-color: #4A4A7C; }
 .btn-outline:hover { border-color: var(--text); background: var(--text); color: #000; }
 .btn-block { width: 100%; }
 .btn-sm { padding: 12px 18px; font-size: .72rem; }
@@ -74,18 +74,18 @@ button { font-family: inherit; cursor: pointer; }
 /* Nav */
 .nav {
   position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px);
-  background: rgba(0,0,0,.82); border-bottom: 1px solid var(--border);
+  background: rgba(20,20,47,.88); border-bottom: 1px solid var(--border);
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; max-width: var(--maxw); margin: 0 auto; }
-.logo { display: flex; align-items: center; gap: 10px; font-family: 'Pacifico', cursive; font-weight: 400; font-size: 1.4rem; letter-spacing: 0; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: 'Oswald', 'Inter', sans-serif; font-weight: 500; font-size: 1.15rem; letter-spacing: .2em; text-transform: uppercase; }
 .logo-mark {
-  width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: block; flex-shrink: 0;
+  width: 44px; height: 44px; object-fit: contain; display: block; flex-shrink: 0;
 }
 .nav-links { display: flex; align-items: center; gap: 34px; }
 .nav-links a { font-weight: 500; font-size: .86rem; color: var(--text-dim); transition: color .15s; }
 .nav-links a:hover, .nav-links a.active { color: var(--text); }
 .nav-actions { display: flex; align-items: center; gap: 14px; }
-.cart-btn { position: relative; display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #3a3a3a; border-radius: 4px; font-weight: 600; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; transition: border-color .15s; }
+.cart-btn { position: relative; display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #4A4A7C; border-radius: 4px; font-weight: 600; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; transition: border-color .15s; }
 .cart-btn:hover { border-color: var(--accent); }
 .cart-count {
   position: absolute; top: -9px; right: -9px; background: var(--accent); color: var(--on-accent);
@@ -95,7 +95,7 @@ button { font-family: inherit; cursor: pointer; }
 .nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.6rem; }
 
 @media (max-width: 860px) {
-  .nav-links { position: fixed; top: 68px; left: 0; right: 0; background: #000; border-bottom: 1px solid var(--border);
+  .nav-links { position: fixed; top: 78px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border);
     flex-direction: column; align-items: flex-start; padding: 22px 28px; gap: 20px; transform: translateY(-130%); transition: transform .25s ease; }
   .nav-links.open { transform: translateY(0); }
   .nav-toggle { display: block; }
@@ -107,7 +107,7 @@ button { font-family: inherit; cursor: pointer; }
 .hero-inner { position: relative; text-align: center; max-width: 980px; margin: 0 auto; }
 .hero h1 { font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 500; letter-spacing: -0.045em; }
 .hero .accent-text { color: var(--accent); }
-.hero p.lead { font-size: 1.15rem; max-width: 600px; margin: 26px auto 38px; color: #d4d4d4; }
+.hero p.lead { font-size: 1.15rem; max-width: 600px; margin: 26px auto 38px; color: #D8D8EE; }
 .hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .hero-tags { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
 .tag { font-size: .72rem; font-weight: 500; color: var(--text-dim); border: 1px solid var(--border); padding: 7px 14px; border-radius: 4px; letter-spacing: .04em; }
@@ -136,7 +136,7 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Lightbox (click a slideshow photo to view it undamaged, full size) */
 .lightbox-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,.95); z-index: 500;
+  position: fixed; inset: 0; background: rgba(10,10,26,.95); z-index: 500;
   display: none; align-items: center; justify-content: center; padding: 30px;
 }
 .lightbox-overlay.open { display: flex; }
@@ -186,11 +186,11 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Custom CTA band */
 .custom-band { border-radius: var(--radius); background: var(--accent); color: var(--on-accent); padding: 72px 52px; display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
-.custom-band h2 { font-size: clamp(2rem,4.5vw,3.2rem); color: #000; }
-.custom-band p { color: rgba(0,0,0,.72); }
-.custom-band .eyebrow { color: #000; }
+.custom-band h2 { font-size: clamp(2rem,4.5vw,3.2rem); color: var(--on-accent); }
+.custom-band p { color: rgba(20,20,47,.82); }
+.custom-band .eyebrow { color: var(--on-accent); }
 .custom-band-text { max-width: 620px; }
-.custom-band .btn-primary { background: #000; color: #fff; }
+.custom-band .btn-primary { background: var(--on-accent); color: #fff; }
 .custom-band .btn-primary:hover { background: #fff; color: #000; }
 @media (max-width: 700px) { .custom-band { padding: 48px 26px; } }
 
@@ -270,7 +270,7 @@ footer { border-top: 1px solid var(--border); padding: 70px 0 34px; background: 
 
 /* Custom designer */
 .upload-zone {
-  border: 2px dashed #3a3a3a; border-radius: var(--radius); padding: 60px 24px; text-align: center; cursor: pointer;
+  border: 2px dashed #4A4A7C; border-radius: var(--radius); padding: 60px 24px; text-align: center; cursor: pointer;
   transition: border-color .2s, background .2s;
 }
 .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: rgba(var(--accent-rgb),.06); }
@@ -329,9 +329,61 @@ footer { border-top: 1px solid var(--border); padding: 70px 0 34px; background: 
 
 /* Offers & Bundles */
 .offer-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 26px; display: flex; flex-direction: column; gap: 12px; position: relative; }
-.offer-card.highlight { border-color: var(--accent-2); background: linear-gradient(180deg, rgba(var(--accent2-rgb),.22), var(--surface)); }
+.offer-card.highlight { border-color: rgba(var(--accent-rgb),.6); background: linear-gradient(180deg, rgba(var(--accent2-rgb),.22), var(--surface)); }
 .offer-card .offer-tag { position: absolute; top: -12px; left: 22px; background: var(--accent); color: var(--on-accent); font-size: .64rem; font-weight: 700; padding: 5px 12px; border-radius: 3px; letter-spacing: .1em; text-transform: uppercase; }
 .old-price { color: var(--text-dim); font-size: 1rem; font-weight: 500; text-decoration: line-through; margin-right: 4px; }
 .save-tag { display: inline-block; vertical-align: middle; margin-left: 6px; background: rgba(var(--accent-rgb),.18); color: var(--accent); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 3px; }
 .offer-card h3 { font-size: 1.3rem; }
 .offer-card .price { font-size: 1.6rem; margin-top: auto; padding-top: 6px; }
+
+/* =========================================================
+   GLASS ACCENTS: buttons and price areas only.
+   Everything else stays flat and clean.
+   ========================================================= */
+
+/* Buttons */
+.btn { border-radius: 10px; }
+.btn-primary {
+  background: linear-gradient(180deg, rgba(255,194,60,.97), rgba(255,172,22,.93));
+  border: 1px solid rgba(255,255,255,.32);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.40), 0 6px 18px rgba(255,172,22,.16);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, #FFCB5C, #FFB326); color: var(--on-accent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 22px rgba(255,172,22,.24);
+}
+.btn-outline {
+  background: rgba(255,255,255,.06); color: var(--text);
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.btn-outline:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.42); color: var(--text); }
+.custom-band .btn-primary {
+  background: linear-gradient(180deg, rgba(38,38,79,.96), rgba(20,20,47,.98)); color: #fff;
+  border: 1px solid rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+}
+.custom-band .btn-primary:hover { background: #14142F; color: #fff; }
+.cart-btn { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.22); border-radius: 10px; box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
+
+/* Prices: a light frosted chip so the number stands out */
+.card .price, .offer-card .price {
+  align-self: flex-start; display: inline-flex; align-items: baseline; gap: 4px;
+  padding: 6px 14px; border-radius: 10px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.summary-line.total {
+  padding: 12px 14px; border-radius: 10px; border-top: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.07); box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+.deposit-callout .amount span, .deposit-callout .amount small { }
+.deposit-callout:not(.compact) .amount {
+  padding: 8px 16px; border-radius: 10px;
+  background: rgba(255,255,255,.30); border: 1px solid rgba(255,255,255,.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.price-wrap { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.offer-card .price { margin-top: 0; padding-top: 6px; white-space: nowrap; }
+.price-wrap .old-price, .price-wrap .save-tag { white-space: nowrap; margin: 0; }
