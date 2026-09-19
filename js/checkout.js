@@ -163,7 +163,10 @@ async function handlePlaceOrder() {
     return;
   }
 
-  const orderNumber = nextOrderNumber();
+  const placeBtnEarly = document.getElementById("place-order-btn");
+  placeBtnEarly.disabled = true;
+  placeBtnEarly.textContent = "Placing your order...";
+  const orderNumber = (typeof fetchOrderNumber === "function" ? await fetchOrderNumber() : null) || fallbackOrderNumber();
   const subtotal = cartSubtotal();
   const delivery = SITE_CONFIG.deliveryFeeEGP;
 

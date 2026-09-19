@@ -28,6 +28,20 @@ function getSupabaseClient() {
   return _supabaseClient;
 }
 
+/* Shared, ever-increasing order number from Supabase (PC-0001, PC-0002, ...).
+   Returns null if the counter isn't reachable, so the caller can fall back. */
+async function fetchOrderNumber() {
+  const client = getSupabaseClient();
+  if (!client) return null;
+  try {
+    const { data, error } = await client.rpc("next_order_number");
+    if (error || data === null || data === undefined) return null;
+    return "PC-" + String(data).padStart(4, "0");
+  } catch (e) {
+    return null;
+  }
+}
+
 async function uploadCustomImages(order) {
   const client = getSupabaseClient();
   if (!client) return false;

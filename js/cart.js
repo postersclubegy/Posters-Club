@@ -73,12 +73,12 @@ function formatMoney(n) {
   return n.toLocaleString("en-US") + " " + SITE_CONFIG.currency;
 }
 
-/* Order numbers, e.g. PC-0001, incrementing in localStorage */
-function nextOrderNumber() {
-  let seq = parseInt(localStorage.getItem("pc_order_seq") || "0", 10);
-  seq += 1;
-  localStorage.setItem("pc_order_seq", String(seq));
-  return "PC-" + String(seq).padStart(4, "0");
+/* Backup order number (date + random) used only if the shared counter in
+   Supabase can't be reached. It never repeats, but it doesn't count up. */
+function fallbackOrderNumber() {
+  const d = new Date();
+  const yymmdd = String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+  return "PC-" + yymmdd + "-" + String(Math.floor(Math.random() * 1000)).padStart(3, "0");
 }
 
 function saveOrderRecord(order) {
